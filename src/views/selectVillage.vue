@@ -51,6 +51,7 @@ export default {
 }
 .container__search {
   padding: 0.3rem 0.44rem 0.36rem;
+  background: #E5E5E5;
 }
 .search {
   display: flex;
@@ -85,7 +86,7 @@ export default {
   text-align: center;
   line-height: 1rem;
   font-size: 0.32rem;
-  font-family:'MicrosoftYaHeiLight';
+  font-family:'MicrosoftYaHei-light';
   border-bottom: 1px solid #DCDCDC;
 }
 </style>

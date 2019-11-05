@@ -6,9 +6,10 @@ import Vant from 'vant';
 import 'vant/lib/index.css';
 import './assets/css/reset.css'
 import './assets/js/rem'
-import './permission'
+import globalComponents from './utils/globalComponent'
 
 Vue.use(Vant);
+Vue.use(globalComponents)
 
 Vue.config.productionTip = false
 

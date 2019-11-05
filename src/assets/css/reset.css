@@ -24,6 +24,7 @@
    font-weight: normal;
    vertical-align: baseline;
    font-size: 0.24rem;
+   background: #FFFFFF;
  }
  /* HTML5 display-role reset for older browsers */
  article, aside, details, figcaption, figure, 
@@ -72,7 +73,7 @@
  }
  html, body{
    width: 100%;
-   font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", "微软雅黑", sans-serif;
+   font-family: "MicrosoftYaHei-regular", "Arial", "黑体", "宋体", "微软雅黑", sans-serif;
  }
  body{
    line-height: 1;

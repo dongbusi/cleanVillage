@@ -18,30 +18,38 @@
     <section class="container__survey">
       <div class="header__survey">村社概况</div>
       <div class="body__survey">
-        <div class="item__survey">
-          <div class="item__survey__thumb">
-            <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+        <router-link to="/villagesurvey/0">
+          <div class="item__survey">
+            <div class="item__survey__thumb">
+              <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+            </div>
+            <div class="item__survey__text">村社基本情况</div>
           </div>
-          <div class="item__survey__text">村社基本情况</div>
-        </div>
-         <div class="item__survey">
-          <div class="item__survey__thumb">
-            <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+        </router-link>
+        <router-link to="/villagesurvey/1">
+          <div class="item__survey">
+            <div class="item__survey__thumb">
+              <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+            </div>
+            <div class="item__survey__text">干部队伍情况</div>
           </div>
-          <div class="item__survey__text">干部队伍情况</div>
-        </div>
-         <div class="item__survey">
-          <div class="item__survey__thumb">
-            <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+        </router-link>
+        <router-link to="/villagesurvey/2">
+          <div class="item__survey">
+            <div class="item__survey__thumb">
+              <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+            </div>
+            <div class="item__survey__text">党员队伍</div>
           </div>
-          <div class="item__survey__text">党员队伍</div>
-        </div>
-         <div class="item__survey">
-          <div class="item__survey__thumb">
-            <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+        </router-link>
+        <router-link to="/villagesurvey/3">
+          <div class="item__survey">
+            <div class="item__survey__thumb">
+              <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+            </div>
+            <div class="item__survey__text">居民代表</div>
           </div>
-          <div class="item__survey__text">居民代表</div>
-        </div>
+        </router-link>
       </div>
     </section>
     <section class="container__news">
@@ -121,7 +129,7 @@ export default {
   color: #000000;
   font-size: 0.22rem;
   font-weight:400;
-  font-family:'Microsoft YaHei';
+  font-family:'MicrosoftYaHei-regular';
   white-space: nowrap;
 }
 .item__nav:nth-child(4n+1) {
@@ -147,7 +155,7 @@ export default {
   font-size: 0.34rem;
   color: #000000;
   font-weight: 400;
-  font-family:'Microsoft YaHei';
+  font-family:'MicrosoftYaHei-regular';
 }
 .body__survey {
   display: flex;
@@ -167,7 +175,8 @@ export default {
   white-space: nowrap;
   font-size: 0.2rem;
   text-align: center;
-  font-family:'Microsoft YaHei';
+  font-family:'MicrosoftYaHei-regular';
+  color: #000000;
 }
 .item__survey__thumb {
   width: 1.51rem;
@@ -182,7 +191,7 @@ export default {
 .header__news {
   font-size: 0.34rem;
   color: #000000;
-  font-family:'Microsoft YaHei';
+  font-family:'MicrosoftYaHei-regular';
   font-weight: 400;
 }
 .body__news {
@@ -198,7 +207,7 @@ export default {
   font-size: 0.26rem;
   font-weight: 300;
   line-height: 0.5rem;
-  font-family:'Microsoft YaHei';
+  font-family:'MicrosoftYaHei-regular';
 }
 .item__news div:first-child {
   width: 5.4rem;

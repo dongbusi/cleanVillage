@@ -1,24 +1,24 @@
 <template>
   <div class="container__tabbar">
-    <router-link class="item__tabbar"  to="/">
+    <router-link class="item__tabbar"  to="/village/1/index">
       <div class="item__tabbar__icon">
         <img src="@/assets/img/tab-1.png" alt="">
       </div>
       <div class="item__tabbar__name">返回首页</div>
     </router-link>
-    <router-link class="item__tabbar" :to="{ name: 'cleanrulestab', params: { id: 0 }}" >
+    <router-link class="item__tabbar" :to="{ name: 'tab', params: { tab_id: 0}}" >
       <div class="item__tabbar__icon">
         <img src="@/assets/img/tab-2.png" alt="">
       </div>
       <div class="item__tabbar__name">清廉制度</div>
     </router-link>
-    <router-link to="/public" class="item__tabbar" >
+    <router-link :to="{ name: 'tab', params: { tab_id: 0 }}" class="item__tabbar" >
       <div class="item__tabbar__icon">
         <img src="@/assets/img/tab-3.png" alt="">
       </div>
       <div class="item__tabbar__name">三小公开</div>
     </router-link>
-    <router-link to="/platform" class="item__tabbar">
+    <router-link to="/platform/commentList" class="item__tabbar">
       <div class="item__tabbar__icon">
         <img src="@/assets/img/tab-4.png" alt="">
       </div>
