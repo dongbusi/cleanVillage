@@ -18,7 +18,7 @@
       </div>
       <div class="item__tabbar__name">三小公开</div>
     </router-link>
-    <router-link to="/platform/commentList" class="item__tabbar">
+    <router-link :to="{ name: 'commentList', params: { tab_id: 0 }}" class="item__tabbar">
       <div class="item__tabbar__icon">
         <img src="@/assets/img/tab-4.png" alt="">
       </div>
