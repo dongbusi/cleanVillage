@@ -2,7 +2,7 @@
   <div class="container">
     <section class="container__search">
       <div class="search">
-        <input class="input__search" type="text" v-model="value" placeholder="在此输入您的村社">
+        <input class="input__search" type="text" v-model="address" placeholder="在此输入您的村社">
         <div class="icon__search">
           <img src="../assets/img/icon-search.png" alt="">
         </div>
@@ -20,9 +20,9 @@
 export default {
   data () {
     return {
-      value: '',
       address: '',
-      addressList: ['江寺', '百尺溇', '燕子河', '丁家庄', '南市', '藕湖浜', '陈公桥', '东阳桥']
+      addressList: ['江寺', '百尺溇', '燕子河', '丁家庄', '南市', '藕湖浜', '陈公桥', '东阳桥'],
+      addressListAll: ['江寺', '百尺溇', '燕子河', '丁家庄', '南市', '藕湖浜', '陈公桥', '东阳桥'],
     }
   },
   methods: {
@@ -30,17 +30,20 @@ export default {
       this.$emit('hideTabbar')
     },
     selectAddress (index) {
-      let address = this.addressList[index]
-      this.address = address
-      sessionStorage.address = address
-      this.$store.dispatch('setAddress', address).then(res => {
-        this.$router.push({ path: '/' })
-        this.$emit('showTabbar')
-      })
+      this.$router.push({ name: 'index', params: { village_id: 1 } })
     }
   },
   mounted () {
     this.hideTabbar()
+  },
+  watch: {
+    address (newVal) {
+      if (newVal === '') {
+        this.addressList = this.addressListAll
+      } else {
+        this.addressList = this.addressListAll.filter(item => item.includes(newVal))
+      }
+    }
   }
 }
 </script>

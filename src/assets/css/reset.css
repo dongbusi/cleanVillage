@@ -74,6 +74,7 @@
  html, body{
    width: 100%;
    font-family: "MicrosoftYaHei-regular", "Arial", "黑体", "宋体", "微软雅黑", sans-serif;
+   -webkit-overflow-scrolling: touch;
  }
  body{
    line-height: 1;

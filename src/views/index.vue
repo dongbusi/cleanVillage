@@ -9,7 +9,7 @@
     </section>
     <section class="container__nav">
       <div class="body__nav">
-        <div class="item__nav" v-for="(item, index) in navList" :key="index">
+        <div class="item__nav" v-for="(item, index) in navList" :key="index" @click="goTabList">
           <div class="item-icon"><img :src="require('@/assets/img/' + item + '.png')" alt=""></div>
           <div class="item-name">家门口的监委</div>
         </div>
@@ -18,8 +18,8 @@
     <section class="container__survey">
       <div class="header__survey">村社概况</div>
       <div class="body__survey">
-        <router-link to="/villagesurvey/0">
-          <div class="item__survey">
+        <router-link :to="{name: 'tab', params: {menu_id: 1, tab_id: 0}}">
+          <div class="item__survey first" >
             <div class="item__survey__thumb">
               <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
             </div>
@@ -55,7 +55,7 @@
     <section class="container__news">
       <div class="header__news">重大事项公开</div>
       <div class="body__news">
-        <div class="item__news">
+        <div class="item__news" @click="goNewsDetails">
           <div>聚焦民生实事，城厢街道既有住宅加装电梯最新进展</div>
           <div>09-10</div>
         </div>
@@ -88,6 +88,14 @@ export default {
   data () {
     return {
       navList: [1, 2, 3, 4, 5, 6, 7, 8]
+    }
+  },
+  methods: {
+    goTabList () {
+      this.$router.push({ name: 'tab', params: { menu_id: 1, tab_id: 1 } })
+    },
+    goNewsDetails () {
+      this.$router.push({ name: 'details', params: { menu_id: 1, tab_id: 1, details_id: 1 } })
     }
   },
   mounted () {
@@ -147,7 +155,7 @@ export default {
 }
 .container__survey {
   height: 3.04rem;
-  padding: 0.37rem 0.44rem;
+  padding: 0.37rem 0.43rem;
   box-sizing: border-box;
   border-bottom: 1px solid #E5E5E5;
 }
@@ -160,8 +168,8 @@ export default {
 .body__survey {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-top: 0.3rem;
+  overflow-x: scroll;
 }
 .item__survey {
   display: flex;
@@ -169,6 +177,12 @@ export default {
   justify-content: space-between;
   flex-direction: column;
   height: 1.76rem;
+  flex: none;
+  margin-left: 0.2rem;
+  -webkit-overflow-scrolling: touch;
+}
+.item__survey.first{
+  margin-left: 0;
 }
 .item__survey__text {
   width: 100%;
