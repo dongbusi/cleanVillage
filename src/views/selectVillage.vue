@@ -22,7 +22,7 @@ export default {
     return {
       value: '',
       address: '',
-      addressList: ['江寺', '百尺溇', '燕子河', '丁家庄', '南市', '藕湖浜', '陈公桥', '东阳桥', '洄澜北苑']
+      addressList: ['江寺', '百尺溇', '燕子河', '丁家庄', '南市', '藕湖浜', '陈公桥', '东阳桥']
     }
   },
   methods: {
