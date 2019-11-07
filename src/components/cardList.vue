@@ -1,52 +1,76 @@
 <template>
   <div>
     <div class="tab-header">
-      所谓纪检监察调研是指纪检监察机关及其工作人员对党风廉政建设和反腐败工作以及与此相关的社会现象等客观情况，有目的、有计划、有组织地运用一定的方式、方法及各种技术手段，收集有关信息资料，进行整理、加工和分析，予以全面、准确的概括、阐释，提出有针对性的具体方案和建议的实践活动。
+      {{info}}
     </div>
     <div class="card-list">
-      <div class="card-item">
-        <div>xxx支部</div>
-        <div>目前党员人数：20人</div>
-        <div>支部书记：XXX</div>
-        <div>支部委员：XXX</div>
-        <div>支部党员：XXX、XXX、XX、XXX</div>
+      <div class="card-item" v-for="(item, index) in list" :key="index">
+        <div>{{item.branch}}</div>
+        <div>目前党员人数：{{item.num}}人</div>
+        <div>支部书记：{{item.clerk}}</div>
+        <div>支部委员：{{item.user}}</div>
+        <div>支部党员：{{item.party_user}}</div>
         <div class="photo">
           <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
-          <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
-          <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
-          <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
-          <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
-          <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
         </div>
-      </div>
-      <div class="card-item">
-        <div>xxx支部</div>
-        <div>目前党员人数：20人</div>
-        <div>支部书记：XXX</div>
-         <div>支部委员：XXX</div>
-        <div>支部党员：XXX、XXX、XX、XXX</div>
-      </div>
-      <div class="card-item">
-        <div>xxx支部</div>
-        <div>目前党员人数：20人</div>
-        <div>支部书记：XXX</div>
-         <div>支部委员：XXX</div>
-        <div>支部党员：XXX、XXX、XX、XXX</div>
-      </div>
-      <div class="card-item">
-        <div>xxx支部</div>
-        <div>目前党员人数：20人</div>
-        <div>支部书记：XXX</div>
-         <div>支部委员：XXX</div>
-        <div>支部党员：XXX、XXX、XX、XXX</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import { getCardList } from '../api/index'
+
 export default {
-  
+  data () {
+    return {
+      list: [],
+      page: 0,
+      limit: 3,
+      info: ''
+    }
+  },
+  props: {
+    id: {
+      type: Number,
+      default: 0,
+      required: true
+    }
+  },
+  methods: {
+    getList () {
+      this.loading = true
+      getCardList({
+        pid: this.id,
+        street_id: this.$route.params.village_id,
+        limit: this.limit,
+        page: this.page + 1
+      }).then(res => {
+        this.list = [...this.list, ...res.data.list.list]
+        this.info = res.data.list.text
+        this.loading = false
+        this.page = res.data.list.page.current
+      })
+    },
+    scroll () {
+      let height = document.documentElement.clientHeight;
+      let scrollTop = document.documentElement.scrollTop;
+      let scrollHeight = document.documentElement.scrollHeight;
+      if (scrollHeight - height - scrollTop === 0 && this.loading === false) {
+        this.getList()
+      }
+    },
+    watchScroll () {
+      window.addEventListener('scroll', this.scroll)
+      this.$once('hook:beforeDestroy', function () {
+        window.removeEventListener('scroll', this.scroll)
+      })
+    }
+  },
+  mounted () {
+    this.getList()
+  }
 }
 </script>
 
@@ -73,6 +97,9 @@ export default {
     line-height: 1rem;
     font-weight: 300;
     font-family: 'MicrosoftYaHei-Regular';
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   div:first-child {
     border-bottom: 0.01rem solid #F18C79;

@@ -1,21 +1,51 @@
 <template>
-  <div class="content">
-    2002年4月，将新塘街道的车家埭、梅花楼等5个转制 村和蜀山街道的南门、仙家里2个转制村划入城厢街道，同 时将城厢ssssss
-  </div>
+  <div class="content" v-html="content.content"></div>
 </template>
 
 <script>
+
+import { getContents } from '../api/index'
+
 export default {
-  
+  data () {
+    return {
+      content: ''
+    }
+  },
+  props: {
+    id: {
+      required: true,
+      default: 0,
+      type: Number
+    }
+  },
+  methods: {
+    getContent () {
+      getContents({
+        pid: this.id,
+        street_id: this.$route.params.village_id
+      }).then(res => {
+        this.content = res.data || {}
+      })
+    }
+  },
+  mounted () {
+    this.getContent()
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .content {
-  font-size: 0.26rem;
-  img {
-    max-width: 100%;
-    object-fit: cover;
+  /deep/ p {
+    font-size: 0.26rem;
+    line-height: 1.5;
+    text-indent: 2em;
+    text-align: justify;
+    img {
+      max-width: 100%;
+      object-fit: cover;
+    }
   }
 }
 

@@ -31,6 +31,7 @@ export default {
     },
     selectAddress (index) {
       this.$router.push({ name: 'index', params: { village_id: 1 } })
+      this.$emit('showTabbar')
     }
   },
   mounted () {

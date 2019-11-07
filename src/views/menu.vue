@@ -3,11 +3,11 @@
     <section class="container__navbar">
       <div class="wrap__navbar">
         <van-tabs sticky v-model="navbar" color="#F18C79" line-height="0.07rem" :ellipsis="false">
-          <van-tab v-for="(item, index) in navbarList" :key="index" :title="item.name" class="tabs" :to="{name: 'tab', params: {tab_id: index}}">
+          <van-tab v-for="(item, index) in navbarList" :key="index" :title="item.title" class="tabs" :to="{name: 'tab', params: {tab_index: index}}">
             <div class="container__tab">
               <div>
-                <router-view v-if="showDetails"></router-view>
-                <component v-else :is="navbarList[navbar].type"></component>
+                <router-view v-if="showDetails" :id="navbarList[navbar].id"></router-view>
+                <component v-else :is="navbarList[navbar].tag" :id="navbarList[navbar].id"></component>
               </div>
             </div>
           </van-tab>
@@ -18,51 +18,31 @@
 </template>
 
 <script>
-
+import { getTab } from '../api/index'
 export default {
   data () {
     return {
-      navbar: Number(this.$route.params.tab_id) || 0,
-      navbarList: [
-        {
-          name: '村社基本情况',
-          type: 'contents'
-        },
-        {
-          name: '村社干部队伍情况',
-          type: 'infoList'
-        },
-        {
-          name: '党员队伍',
-          type: 'cardList'
-        },
-        {
-          name: '居民代表',
-          type: 'lineList'
-        },
-        {
-          name: '小微权力',
-          type: 'newsList'
-        },
-        {
-          name: '我们在行动',
-          type: 'introduceList'
-        },
-        {
-          name: '社区监委',
-          type: 'inspectorDetais'
-        }
-      ],
+      navbar: Number(this.$route.params.tab_index) || 0,
+      navbarList: [],
       showDetails: this.$route.name === 'details'
     }
   },
   methods: {
     init () {
       document.title = '村社概况'
+    },
+    getTab () {
+      getTab({
+        pid: this.$route.params.menu_id,
+        street_id: this.$route.params.village_id
+      }).then(res => {
+        this.navbarList = res.data.list
+      })
     }
   },
   mounted () {
     this.init()
+    this.getTab()
   },
   watch: {
     $route (newVal) {
@@ -71,8 +51,8 @@ export default {
       } else {
         this.showDetails = false
       }
-      if (Number(newVal.params.tab_id) !== this.navbar) {
-        this.navbar = Number(newVal.params.tab_id)
+      if (Number(newVal.params.tab_index) !== this.navbar) {
+        this.navbar = Number(newVal.params.tab_index)
       }
     }
   }

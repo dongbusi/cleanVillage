@@ -74,7 +74,6 @@
  html, body{
    width: 100%;
    font-family: "MicrosoftYaHei-regular", "Arial", "黑体", "宋体", "微软雅黑", sans-serif;
-   -webkit-overflow-scrolling: touch;
  }
  body{
    line-height: 1;
@@ -106,3 +105,11 @@
  .dn{
    display: none;
  }
+
+.line-three {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

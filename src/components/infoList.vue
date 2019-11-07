@@ -1,43 +1,69 @@
 <template>
   <div>
-    <div class="container__inspector">
-      <img src="" alt="" class="inspector-avatur">
+    <div class="container__inspector" v-for="(item, index) in list" :key="index">
+      <img :src="item.photo_img" alt="" class="inspector-avatur">
       <div class="inspector-info">
-        <div>王小明</div>
-        <div>职务：监察联络员<br>电话：12930948734</div>
-        <div>一句话承诺：<br>一切为人民服务</div>
-      </div>
-    </div>
-    <div class="container__inspector">
-      <img src="" alt="" class="inspector-avatur">
-      <div class="inspector-info">
-        <div>王小明</div>
-        <div>职务：监察联络员<br>电话：12930948734</div>
-        <div>一句话承诺：<br>一切为人民服务</div>
-      </div>
-    </div>
-    <div class="container__inspector">
-      <img src="" alt="" class="inspector-avatur">
-      <div class="inspector-info">
-        <div>王小明</div>
-        <div>职务：监察联络员<br>电话：12930948734</div>
-        <div>一句话承诺：<br>一切为人民服务</div>
-      </div>
-    </div>
-    <div class="container__inspector">
-      <img src="" alt="" class="inspector-avatur">
-      <div class="inspector-info">
-        <div>王小明</div>
-        <div>职务：监察联络员<br>电话：12930948734</div>
-        <div>一句话承诺：<br>一切为人民服务</div>
+        <div>{{item.realname}}</div>
+        <div>职务：{{item.job}}<br>电话：{{item.telphone}}</div>
+        <div class="line-three">一句话承诺：<br>{{item.motto}}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import { getInfoList } from '../api/index'
+
 export default {
-  
+  data () {
+    return {
+      list: [],
+      loading: false,
+      page: 0,
+      limit: 6
+    }
+  },
+  props: {
+    id: {
+      required: true,
+      type: Number,
+      default: 0
+    }
+  },
+  methods: {
+    getList () {
+      this.loading = true
+      getInfoList({
+        pid: this.id,
+        street_id: this.$route.params.village_id,
+        limit: this.limit,
+        page: this.page + 1
+      }).then(res => {
+        this.list = [...this.list, ...res.data.list.list]
+        this.loading = false
+        this.page = res.data.list.page.current
+      })
+    },
+    scroll () {
+      let height = document.documentElement.clientHeight;
+      let scrollTop = document.documentElement.scrollTop;
+      let scrollHeight = document.documentElement.scrollHeight;
+      if (scrollHeight - height - scrollTop === 0 && this.loading === false) {
+        this.getList()
+      }
+    },
+    watchScroll () {
+      window.addEventListener('scroll', this.scroll)
+      this.$once('hook:beforeDestroy', function () {
+        window.removeEventListener('scroll', this.scroll)
+      })
+    }
+  },
+  mounted () {
+    this.getList()
+    this.watchScroll()
+  }
 }
 </script>
 
@@ -50,7 +76,6 @@ export default {
 .inspector-avatur {
   width: 2.5rem;
   height: 3rem;
-  background: #F18C79;
   flex: none;
 }
 .inspector-info {
@@ -71,10 +96,12 @@ export default {
   font-family:'MicrosoftYaHei-regular';
 }
 .inspector-info div:nth-child(3) {
-  margin-top: 0.4rem;
+  margin-top: 0.26rem;
   font-weight:400;
   font-size: 0.26rem;
   line-height: 1.5;
   font-family:'MicrosoftYaHei-regular';
+  width: 2.8rem;
+  text-align: justify;
 }
 </style>

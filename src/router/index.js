@@ -16,7 +16,7 @@ const routes = [
         name: 'index'
       },
       {
-        path: 'menu/:menu_id/tab/:tab_id',
+        path: 'menu/:menu_id/tab/:tab_index',
         name: 'tab',
         component: () => import('../views/menu.vue'),
         children: [

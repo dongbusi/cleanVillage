@@ -53,10 +53,13 @@ export default {
   line-height: 1.5;
 }
 .inspector-info div:nth-child(3) {
-  margin-top: 0.4rem;
+  margin-top: 0.26rem;
   font-weight:400;
   font-size: 0.26rem;
   line-height: 1.5;
+  font-family:'MicrosoftYaHei-regular';
+  width: 2.8rem;
+  text-align: justify;
 }
 .address {
   margin-top: 0.8rem;

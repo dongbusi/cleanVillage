@@ -9,16 +9,16 @@
     </section>
     <section class="container__nav">
       <div class="body__nav">
-        <div class="item__nav" v-for="(item, index) in navList" :key="index" @click="goTabList">
-          <div class="item-icon"><img :src="require('@/assets/img/' + item + '.png')" alt=""></div>
-          <div class="item-name">家门口的监委</div>
+        <div class="item__nav" v-for="(item, index) in navList" :key="index" @click="goTabList(item.id)">
+          <div class="item-icon"><img :src="item.logo" :alt="item.title"></div>
+          <div class="item-name">{{item.title}}</div>
         </div>
       </div>
     </section>
     <section class="container__survey">
       <div class="header__survey">村社概况</div>
       <div class="body__survey">
-        <router-link :to="{name: 'tab', params: {menu_id: 1, tab_id: 0}}">
+        <router-link :to="{name: 'tab', params: {menu_id: 1, tab_index: 0}}">
           <div class="item__survey first" >
             <div class="item__survey__thumb">
               <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
@@ -84,22 +84,30 @@
   </div>
 </template>
 <script>
+import { getMenu } from '../api/index'
 export default {
   data () {
     return {
-      navList: [1, 2, 3, 4, 5, 6, 7, 8]
+      navList: []
     }
   },
   methods: {
-    goTabList () {
-      this.$router.push({ name: 'tab', params: { menu_id: 1, tab_id: 1 } })
+    goTabList (id) {
+      this.$router.push({ name: 'tab', params: { menu_id: id, tab_index: 0 } })
     },
     goNewsDetails () {
-      this.$router.push({ name: 'details', params: { menu_id: 1, tab_id: 1, details_id: 1 } })
+      this.$router.push({ name: 'details', params: { menu_id: 1, tab_index: 1, details_id: 1 } })
+    },
+    getMenuList () {
+      getMenu({
+        street_id: this.$route.params.village_id
+      }).then(res => {
+        this.navList = res.data.list
+      })
     }
   },
   mounted () {
-    document.title = '清廉村社'
+    this.getMenuList()
   }
 }
 </script>
@@ -135,7 +143,7 @@ export default {
 }
 .item-name {
   color: #000000;
-  font-size: 0.22rem;
+  font-size: 0.24rem;
   font-weight:400;
   font-family:'MicrosoftYaHei-regular';
   white-space: nowrap;
@@ -187,7 +195,7 @@ export default {
 .item__survey__text {
   width: 100%;
   white-space: nowrap;
-  font-size: 0.2rem;
+  font-size: 0.24rem;
   text-align: center;
   font-family:'MicrosoftYaHei-regular';
   color: #000000;
