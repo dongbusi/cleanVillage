@@ -1,10 +1,15 @@
 <template>
-  <div class="content" v-html="content.content"></div>
+  <div class="content">
+    <div class="title"></div>
+    <div class="info"></div>
+    <div class="text"></div>
+    <div class="img"></div>
+  </div>
 </template>
 
 <script>
 
-import { getContents } from '../api/index'
+import { getCommentDetails } from '../api/index'
 
 export default {
   data () {
@@ -12,20 +17,13 @@ export default {
       content: ''
     }
   },
-  props: {
-    id: {
-      required: true,
-      default: 0,
-      type: Number
-    }
-  },
   methods: {
     getContent () {
-      getContents({
-        pid: this.id,
-        street_id: this.$route.params.village_id
+      getCommentDetails({
+        id: this.$route.params.comment_id,
+        street_id: this.$route.params.village_id,
       }).then(res => {
-        this.content = res.data || {}
+        this.content = res.data.list || {}
       })
     }
   },
@@ -52,5 +50,3 @@ export default {
     margin-top: 0;
   }
 }
-
-</style>

@@ -1,26 +1,49 @@
 <template>
   <div>
     <section class="container__inspector">
-      <img src="" alt="" class="inspector-avatur">
+      <img :src="content.photo_img" alt="" class="inspector-avatur">
       <div class="inspector-info">
-        <div>王小明</div>
-        <div>职务：监察联络员<br>电话：12930948734</div>
-        <div>一句话承诺：<br>一切为人民服务</div>
+        <div>{{content.realname}}</div>
+        <div>职务：{{content.job}}<br>电话：{{content.telphone}}</div>
+        <div>一句话承诺：<br>{{content.motto}}</div>
       </div>
     </section>
-    <section class="address">
-      <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
-      <div>地址：监察联络员 </div>
+    <section class="address" v-html="content.content">
+      <!-- <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+      <div>地址：监察联络员 </div> -->
     </section>
   </div>
 </template>
 
 <script>
+
+import { getInspectorDetails } from '../api/index'
+
 export default {
   data () {
     return {
-
+      content: ''
     }
+  },
+  props: {
+    id: {
+      default: 0,
+      type: Number,
+      required: true
+    }
+  },
+  methods: {
+    getContent () {
+      getInspectorDetails({
+        pid: this.id,
+        street_id: this.$route.params.village_id
+      }).then(res => {
+        this.content = res.data
+      })
+    }
+  },
+  mounted () {
+    this.getContent()
   }
 }
 </script>
@@ -33,7 +56,6 @@ export default {
 .inspector-avatur {
   width: 2.5rem;
   height: 3rem;
-  background: #F18C79;
   flex: none;
 }
 .inspector-info {
@@ -63,11 +85,11 @@ export default {
 }
 .address {
   margin-top: 0.8rem;
-  img {
+  /deep/ img {
     width: 100%;
     object-fit: cover;
   }
-  div {
+  /deep/ p {
     margin-top: 0.2rem;
     font-size: 0.26rem;
   }

@@ -23,7 +23,7 @@ const routes = [
           {
             path: 'details/:details_id',
             name: 'details',
-            component: () => import('../components/content.vue')
+            component: () => import('../views/details.vue')
           }
         ]
       },
@@ -43,9 +43,9 @@ const routes = [
             component: () => import('../components/comment.vue')
           },
           {
-            path: 'details',
+            path: 'details/:comment_id',
             name: 'commentDetails',
-            component: () => import('../components/content.vue')
+            component: () => import('../components/commentDetails.vue')
           }
         ]
       }

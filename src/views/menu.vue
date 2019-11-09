@@ -7,7 +7,7 @@
             <div class="container__tab">
               <div>
                 <router-view v-if="showDetails" :id="navbarList[navbar].id"></router-view>
-                <component v-else :is="navbarList[navbar].tag" :id="navbarList[navbar].id"></component>
+                <component v-else :is="navbarList[navbar].tag" :id="navbarList[navbar].id" :name="navbarList[navbar].title"></component>
               </div>
             </div>
           </van-tab>
@@ -45,7 +45,7 @@ export default {
     this.getTab()
   },
   watch: {
-    $route (newVal) {
+    $route (newVal, oldVal) {
       if (newVal.name === 'details') {
         this.showDetails = true
       } else {
@@ -53,6 +53,9 @@ export default {
       }
       if (Number(newVal.params.tab_index) !== this.navbar) {
         this.navbar = Number(newVal.params.tab_index)
+      }
+      if (newVal.params.menu_id !== oldVal.params.menu_id) {
+        this.getTab()
       }
     }
   }

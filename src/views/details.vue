@@ -4,7 +4,7 @@
 
 <script>
 
-import { getContents } from '../api/index'
+import { getNewsContent } from '../api/index'
 
 export default {
   data () {
@@ -12,18 +12,12 @@ export default {
       content: ''
     }
   },
-  props: {
-    id: {
-      required: true,
-      default: 0,
-      type: Number
-    }
-  },
   methods: {
     getContent () {
-      getContents({
-        pid: this.id,
-        street_id: this.$route.params.village_id
+      getNewsContent({
+        id: this.$route.params.details_id,
+        pid: this.$route.query.tab_id,
+        street_id: this.$route.params.village_id,
       }).then(res => {
         this.content = res.data || {}
       })
@@ -52,5 +46,3 @@ export default {
     margin-top: 0;
   }
 }
-
-</style>

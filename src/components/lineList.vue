@@ -1,28 +1,52 @@
 <template lang="">
   <div>
     <div class="resident-list">
-      <div class="resident-item">居民代表</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
-      <div class="resident-item">xxx</div>
+      <div class="resident-item">{{name}}</div>
+      <div class="resident-item" v-for="(item, index) in list" :key="index">{{item}}</div>
     </div>
   </div>
 </template>
 
 <script>
+
+import { getLineList } from '../api/index'
+
 export default {
-  
+  data () {
+    return {
+      list: [],
+      loading: false
+    }
+  },
+  props: {
+    id: {
+      required: true,
+      type: Number,
+      default: 0
+    },
+    name: {
+      required: true,
+      type: String,
+      default: ''
+    }
+  },
+  methods: {
+    getList () {
+      this.loading = true
+      getLineList({
+        pid: this.id,
+        street_id: this.$route.params.village_id,
+      }).then(res => {
+        this.list = res.data.list
+        this.$nextTick(() => {
+          this.loading = false
+        })
+      })
+    }
+  },
+  mounted () {
+    this.getList()
+  }
 }
 </script>
 

@@ -46,3 +46,87 @@ export function getCardList (data) {
     data: data
   })
 }
+
+export function getLineList (data) {
+  return http({
+    url: 'api.LineList/get_list',
+    data: data,
+    method: 'POST'
+  })
+}
+
+export function getVillageList (data) {
+  return http({
+    url: 'api.Menu/street',
+    data,
+    method: 'POST'
+  })
+}
+
+export function getSwiper () {
+  return http({
+    url: 'api.carousel/gets',
+    method: 'POST'
+  })
+}
+
+export function getNewsList (data) {
+  return http({
+    url: 'api.NewList/get_list',
+    data,
+    method: 'POST'
+  })
+}
+
+export function getNewsContent (data) {
+  return http({
+    url: 'api.NewList/get_details',
+    data,
+    method: 'POST'
+  })
+}
+
+export function getInspectorDetails (data) {
+  return http({
+    url: 'api.inspectorDetais/get_details',
+    method: 'POST',
+    data
+  })
+}
+
+export function getRecommendInfoList (data) {
+  return http({
+    url: 'api.Menu/recommend_1',
+    method: 'POST'
+  })
+}
+
+export function getRecommendNewsList (data) {
+  return http({
+    url: 'api.Menu/recommend_2',
+    method: 'POST'
+  })
+}
+
+export function getRecommendTabbar (data) {
+  return http({
+    url: 'api.Menu/recommend_3',
+    method: 'POST'
+  })
+}
+
+export function getCommentList (data) {
+  return http({
+    url: 'api.Woodpecker/get_list',
+    method: 'POST',
+    data
+  })
+}
+
+export function getCommentDetails (data) {
+  return http({
+    url: 'api.Woodpecker/get_details',
+    data,
+    method: 'POST'
+  })
+}

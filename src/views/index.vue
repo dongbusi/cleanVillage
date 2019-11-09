@@ -2,101 +2,64 @@
   <div>
     <section class="swiper__container">
       <van-swipe :autoplay="3000" class="swiper__list" :show-indicators="false">
-        <van-swipe-item><img class="swiper__item" src="http://static.runoob.com/images/demo/demo2.jpg" alt=""></van-swipe-item>
-        <van-swipe-item><img class="swiper__item" src="https://pic4.zhimg.com/v2-3be05963f5f3753a8cb75b6692154d4a_1200x500.jpg" alt=""></van-swipe-item>
-        <van-swipe-item><img class="swiper__item" src="https://review.chinabrands.cn/chinabrands_cn/seo/image/20190218/%E8%B0%B7%E6%AD%8C%20-%20%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E.jpg" alt=""></van-swipe-item>
+        <van-swipe-item v-for="(item, index) in swiper" :key="index"><img class="swiper__item" :src="item" alt=""></van-swipe-item>
       </van-swipe>
     </section>
     <section class="container__nav">
       <div class="body__nav">
-        <div class="item__nav" v-for="(item, index) in navList" :key="index" @click="goTabList(item.id)">
+        <div class="item__nav" v-for="(item, index) in navList" :key="index" @click="goTabList(item.id, item.url_name)">
           <div class="item-icon"><img :src="item.logo" :alt="item.title"></div>
           <div class="item-name">{{item.title}}</div>
         </div>
       </div>
     </section>
     <section class="container__survey">
-      <div class="header__survey">村社概况</div>
+      <div class="header__survey">{{infoList.title}}</div>
       <div class="body__survey">
-        <router-link :to="{name: 'tab', params: {menu_id: 1, tab_index: 0}}">
-          <div class="item__survey first" >
+        <router-link :to="{name: 'tab', params: {menu_id: infoList.id, tab_index: index}}" v-for="(item, index) in infoList.sub" :key="index">
+          <div :class="['item__survey', index === 0 ? 'first' : '']" >
             <div class="item__survey__thumb">
-              <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+              <img :src="require('../assets/img/index-' + index + '.jpg')" alt="">
             </div>
-            <div class="item__survey__text">村社基本情况</div>
-          </div>
-        </router-link>
-        <router-link to="/villagesurvey/1">
-          <div class="item__survey">
-            <div class="item__survey__thumb">
-              <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
-            </div>
-            <div class="item__survey__text">干部队伍情况</div>
-          </div>
-        </router-link>
-        <router-link to="/villagesurvey/2">
-          <div class="item__survey">
-            <div class="item__survey__thumb">
-              <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
-            </div>
-            <div class="item__survey__text">党员队伍</div>
-          </div>
-        </router-link>
-        <router-link to="/villagesurvey/3">
-          <div class="item__survey">
-            <div class="item__survey__thumb">
-              <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
-            </div>
-            <div class="item__survey__text">居民代表</div>
+            <div class="item__survey__text">{{item.title}}</div>
           </div>
         </router-link>
       </div>
     </section>
     <section class="container__news">
-      <div class="header__news">重大事项公开</div>
+      <div class="header__news">{{newsList.title}}</div>
       <div class="body__news">
-        <div class="item__news" @click="goNewsDetails">
-          <div>聚焦民生实事，城厢街道既有住宅加装电梯最新进展</div>
-          <div>09-10</div>
-        </div>
-        <div class="item__news">
-          <div>聚焦民生实事，城厢街道既有住宅加装电梯最新进展</div>
-          <div>09-10</div>
-        </div>
-        <div class="item__news">
-          <div>聚焦民生实事，城厢街道既有住宅加装电梯最新进展</div>
-          <div>09-10</div>
-        </div>
-        <div class="item__news">
-          <div>聚焦民生实事，城厢街道既有住宅加装电梯最新进展</div>
-          <div>09-10</div>
-        </div>
-        <div class="item__news">
-          <div>聚焦民生实事，城厢街道既有住宅加装电梯最新进展</div>
-          <div>09-10</div>
-        </div>
-        <div class="item__news">
-          <div>聚焦民生实事，城厢街道既有住宅加装电梯最新进展</div>
-          <div>09-10</div>
+        <div class="item__news" @click="goNewsDetails(newsList.id, item.key, item.id, item.pid)" v-for="(item, index) in newsList.data" :key="index">
+          <div>{{item.title}}</div>
+          <div>{{item.create_at}}</div>
         </div>
       </div>
     </section>
   </div>
 </template>
 <script>
-import { getMenu } from '../api/index'
+import { getMenu, getSwiper, getRecommendInfoList, getRecommendNewsList } from '../api/index'
 export default {
   data () {
     return {
-      navList: []
+      navList: [],
+      villageSurveyList: [],
+      villageSurveyId: '',
+      swiper: [],
+      newsList: [],
+      infoList: []
     }
   },
   methods: {
-    goTabList (id) {
+    goTabList (id, urlName) {
+      if (urlName === 'platform') {
+        this.$router.push({ name: 'commentList' })
+        return
+      }
       this.$router.push({ name: 'tab', params: { menu_id: id, tab_index: 0 } })
     },
-    goNewsDetails () {
-      this.$router.push({ name: 'details', params: { menu_id: 1, tab_index: 1, details_id: 1 } })
+    goNewsDetails (menuId, index, detailsId, tabId) {
+      this.$router.push({ name: 'details', params: { menu_id: menuId, tab_index: index, details_id: detailsId }, query: { tab_id: tabId } })
     },
     getMenuList () {
       getMenu({
@@ -104,10 +67,31 @@ export default {
       }).then(res => {
         this.navList = res.data.list
       })
+    },
+    getInfoList () {
+      getRecommendInfoList().then(res => {
+        this.infoList = res.data.list
+      })
+    },
+    getSwiper () {
+      getSwiper().then(res => {
+        this.swiper = res.data
+      })
+    },
+    getNewsList () {
+      getRecommendNewsList().then(res => {
+        res.data.list.data.forEach(item => {
+          item.create_at = item.create_at.slice(0, 10)
+        })
+        this.newsList = res.data.list
+      })
     }
   },
   mounted () {
     this.getMenuList()
+    this.getSwiper()
+    this.getInfoList()
+    this.getNewsList()
   }
 }
 </script>
@@ -116,6 +100,7 @@ export default {
 .swiper__item {
   width: 7.5rem;
   height: 3.5rem;
+  object-fit: cover;
 }
 .container__nav {
   padding: 0.4rem 0.24rem 0;
@@ -178,6 +163,7 @@ export default {
   align-items: center;
   margin-top: 0.3rem;
   overflow-x: scroll;
+  overflow-y: hidden;
 }
 .item__survey {
   display: flex;
@@ -187,7 +173,7 @@ export default {
   height: 1.76rem;
   flex: none;
   margin-left: 0.2rem;
-  -webkit-overflow-scrolling: touch;
+  // -webkit-overflow-scrolling: touch;
 }
 .item__survey.first{
   margin-left: 0;
@@ -230,6 +216,7 @@ export default {
   font-weight: 300;
   line-height: 0.5rem;
   font-family:'MicrosoftYaHei-regular';
+  white-space: nowrap;
 }
 .item__news div:first-child {
   width: 5.4rem;

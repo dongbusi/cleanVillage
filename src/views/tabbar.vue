@@ -1,31 +1,42 @@
 <template>
   <div class="container__tabbar">
-    <router-link class="item__tabbar"  to="/village/1/index">
+    <router-link class="item__tabbar"  :to="{name: 'index', params: {village_id: $route.params.village_id}}">
       <div class="item__tabbar__icon">
         <img src="@/assets/img/tab-1.png" alt="">
       </div>
       <div class="item__tabbar__name">返回首页</div>
     </router-link>
-    <router-link class="item__tabbar" :to="{ name: 'tab', params: { tab_index: 0}}" >
+    <router-link class="item__tabbar" v-for="(item, index) in recommendTabbar" :key="index" :to="item.url_name === 'platform' ? { name: 'commentList'} :  { name: 'tab', params: { village_id: $route.params.village_id, menu_id: item.id, tab_index: 0}}" >
       <div class="item__tabbar__icon">
         <img src="@/assets/img/tab-2.png" alt="">
       </div>
-      <div class="item__tabbar__name">清廉制度</div>
-    </router-link>
-    <router-link :to="{ name: 'tab', params: { tab_index: 0 }}" class="item__tabbar" >
-      <div class="item__tabbar__icon">
-        <img src="@/assets/img/tab-3.png" alt="">
-      </div>
-      <div class="item__tabbar__name">三小公开</div>
-    </router-link>
-    <router-link :to="{ name: 'commentList'}" class="item__tabbar">
-      <div class="item__tabbar__icon">
-        <img src="@/assets/img/tab-4.png" alt="">
-      </div>
-      <div class="item__tabbar__name">啄木鸟平台</div>
+      <div class="item__tabbar__name">{{item.title}}</div>
     </router-link>
   </div>
 </template>
+
+<script>
+
+import { getRecommendTabbar } from '../api/index'
+
+export default {
+  data () {
+    return {
+      recommendTabbar: ''
+    }
+  },
+  methods: {
+    getTabbarRecommend () {
+      getRecommendTabbar().then(res => {
+        this.recommendTabbar = res.data.list
+      })
+    }
+  },
+  mounted () {
+    this.getTabbarRecommend()
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .container__tabbar {

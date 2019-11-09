@@ -11,7 +11,7 @@
         <div>支部委员：{{item.user}}</div>
         <div>支部党员：{{item.party_user}}</div>
         <div class="photo">
-          <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
+          <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.images" :key="indexChild">
         </div>
       </div>
     </div>
@@ -28,7 +28,8 @@ export default {
       list: [],
       page: 0,
       limit: 3,
-      info: ''
+      info: '',
+      loading: false
     }
   },
   props: {
@@ -47,6 +48,10 @@ export default {
         limit: this.limit,
         page: this.page + 1
       }).then(res => {
+        res.data.list.list = res.data.list.list.map(item => {
+          item.images = item.images.split('|')
+          return item
+        })
         this.list = [...this.list, ...res.data.list.list]
         this.info = res.data.list.text
         this.loading = false
@@ -70,6 +75,7 @@ export default {
   },
   mounted () {
     this.getList()
+    this.watchScroll()
   }
 }
 </script>
@@ -115,7 +121,7 @@ export default {
     overflow-x: scroll;
     display: flex;
     align-items: center;
-    -webkit-overflow-scrolling: touch;
+    // -webkit-overflow-scrolling: touch;
     img {
       width: 1.8rem;
       object-fit: cover;

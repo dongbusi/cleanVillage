@@ -1,32 +1,84 @@
 <template>
   <div class="tab-3">
      <div class="tab-header">
-        所谓纪检监察调研是指纪检监察机关及其工作人员对党风廉政建设和反腐败工作以及与此相关的社会现象等客观情况，有目的、有计划、有组织地运用一定的方式、方法及各种技术手段，收集有关信息资料，进行整理、加工和分析，予以全面、准确的概括、阐释，提出有针对性的具体方案和建议的实践活动。
+        {{introduce}}
       </div>
       <div class="tab-list">
-        <div class="tab-item">正在开展的活动</div>
-        <div class="tab-item">城厢街道关于2019年第三季度政府信息依申请</div>
-        <div class="tab-item">城厢街道召开2019年社区宣传员培训工作会议</div>
-        <div class="tab-item">杭州市萧山区人民政府城厢街道办事处（汇总）</div>
-        <div class="tab-item">杭州市萧山区人民政府城厢街道办事处（汇总）</div>
-        <div class="tab-item">杭州市萧山区人民政府城厢街道办事处（汇总）</div>
-        <div class="tab-item">杭州市萧山区人民政府城厢街道办事处（汇总）</div>
-        <div class="tab-item">杭州市萧山区人民政府城厢街道办事处（汇总）</div>
-        <div class="tab-item">杭州市萧山区人民政府城厢街道办事处（汇总）</div>
+        <div class="tab-item">{{name}}</div>
+        <div class="tab-item" v-for="(item, index) in list" :key="index">{{item.title}}</div>
       </div>
   </div>
 </template>
 
 <script>
-export default {
-  date () {
-    return {
 
+import { getNewsList } from '../api/index'
+
+export default {
+  data () {
+    return {
+      list: [],
+      loading: false,
+      page: 0,
+      limit: 6,
+      introduce: ''
     }
+  },
+  props: {
+    id: {
+      required: true,
+      type: Number,
+      default: 0
+    },
+    name: {
+      default: '',
+      type: String,
+      required: true
+    }
+  },
+  methods: {
+    goDetails (id) {
+      this.$router.push({ name: 'details', params: { details_id: id }, query: { tab_id: this.id } })
+    },
+    getList () {
+      this.loading = true
+      getNewsList({
+        pid: this.id,
+        street_id: this.$route.params.village_id,
+        limit: this.limit,
+        page: this.page + 1,
+        type: 7
+      }).then(res => {
+        res.data.list.list.forEach(item => {
+          item.create_at = item.create_at.slice(0, 10)
+        })
+        this.list = [...this.list, ...res.data.list.list]
+        this.loading = false
+        this.introduce = res.data.list.text
+        this.page = res.data.list.page.current
+      })
+    },
+    scroll () {
+      let height = document.documentElement.clientHeight;
+      let scrollTop = document.documentElement.scrollTop;
+      let scrollHeight = document.documentElement.scrollHeight;
+      if (scrollHeight - height - scrollTop === 0 && this.loading === false) {
+        this.getList()
+      }
+    },
+    watchScroll () {
+      window.addEventListener('scroll', this.scroll)
+      this.$once('hook:beforeDestroy', function () {
+        window.removeEventListener('scroll', this.scroll)
+      })
+    }
+  },
+  mounted () {
+    this.getList()
+    this.watchScroll()
   }
 }
 </script>
-
 <style lang="scss" scoped>
 .tab-3 {
   .tab-header {

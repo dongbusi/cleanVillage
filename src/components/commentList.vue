@@ -1,59 +1,79 @@
 <template>
   <div>
     <section class="container__inspector">
-      <img src="" alt="" class="inspector-avatur">
+      <img :src="info.photo_img" alt="" class="inspector-avatur">
       <div class="inspector-info">
-        <div>王小明</div>
-        <div>职务：监察联络员<br>电话：12930948734</div>
-        <div>一句话承诺：<br>一切为人民服务</div>
+        <div>{{info.realname}}</div>
+        <div>职务：{{info.job}}<br>电话：{{info.telphone}}</div>
+        <div>一句话承诺：<br>{{info.motto}}</div>
       </div>
     </section>
     <section class="gap"></section>
     <section class="container__commentlist">
-      <div class="item__commentlist" @click="goDetails">
+      <div class="item__commentlist" @click="goDetails(item.id)" v-for="(item, index) in list" :key="index">
         <div class="item__thumb">
           <img src="" alt="">
         </div>
         <div class="item__info">
-          <div>反馈意见标题反馈意见标题反馈意见 反馈意见标题反馈意见标题标题</div>
-          <div>09-10</div>
-        </div>
-      </div>
-      <div class="item__commentlist">
-        <div class="item__thumb">
-          <img src="" alt="">
-        </div>
-        <div class="item__info">
-          <div>反馈意见标题反馈意见标题反馈意见 反馈意见标题反馈意见标题标题</div>
-          <div>09-10</div>
-        </div>
-      </div>
-      <div class="item__commentlist">
-        <div class="item__thumb">
-          <img src="" alt="">
-        </div>
-        <div class="item__info">
-          <div>反馈意见标题反馈意见标题反馈意见 反馈意见标题反馈意见标题标题</div>
-          <div>09-10</div>
+          <div>{{item.content}}</div>
+          <div>{{item.create_at}}</div>
         </div>
       </div>
     </section>
   </div>
 </template>
 <script>
+
+import { getCommentList } from '../api/index'
+
 export default {
   data () {
     return {
-      
+      list: [],
+      info: '',
+      page: 0,
+      limit: 8,
+      loading: false
     }
   },
   methods: {
-    goDetails () {
-      this.$router.push({ name: 'commentDetails', params: { details_id: 2 } })
+    goDetails (id) {
+      this.$router.push({ name: 'commentDetails', params: { comment_id: id } })
+    },
+    getContent () {
+      this.loading = true
+      getCommentList({
+        street_id: this.$route.params.village_id,
+        page: this.page + 1,
+        limit: this.limit
+      }).then(res => {
+        this.info = res.data.list.text
+        res.data.list.list.forEach(item => {
+          item.create_at = item.create_at.slice(0, 10)
+        })
+        this.list = [...this.list, ...res.data.list.list]
+        this.loading = false
+        this.page = res.data.list.page.current
+      })
+    },
+    scroll () {
+      let height = document.documentElement.clientHeight;
+      let scrollTop = document.documentElement.scrollTop;
+      let scrollHeight = document.documentElement.scrollHeight;
+      if (scrollHeight - height - scrollTop === 0 && this.loading === false) {
+        this.getContent()
+      }
+    },
+    watchScroll () {
+      window.addEventListener('scroll', this.scroll)
+      this.$once('hook:beforeDestroy', function () {
+        window.removeEventListener('scroll', this.scroll)
+      })
     }
   },
   mounted () {
-
+    this.getContent()
+    this.watchScroll()
   }
 }
 </script>
@@ -66,7 +86,6 @@ export default {
 .inspector-avatur {
   width: 2.5rem;
   height: 3rem;
-  background: #F18C79;
   flex: none;
 }
 .inspector-info {
@@ -117,7 +136,6 @@ export default {
 .item__thumb {
   width: 1.62rem;
   height: 1.3rem;
-  background: #F18C79;
   flex: none;
 }
 .item__info {
@@ -128,6 +146,7 @@ export default {
   height: 1.3rem;
 }
 .item__info div {
+  word-break: break-all;
   font-size: 0.26rem;
   font-family: 'MicrosoftYaHei-light';
   line-height: 1.5;

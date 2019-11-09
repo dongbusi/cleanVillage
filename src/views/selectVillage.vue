@@ -10,39 +10,50 @@
     </section>
     <section class="container__list">
       <div class="list">
-        <div class="item" v-for="(item, index) in addressList" :key="index" @click="selectAddress(index)">{{item}}</div>
+        <div class="item" v-for="(item, index) in addressList" :key="index" @click="selectAddress(item.id)">{{item.username}}</div>
       </div>
     </section>
   </div>
 </template>
 
 <script>
+
+import { getVillageList } from '../api/index'
+
 export default {
   data () {
     return {
       address: '',
-      addressList: ['江寺', '百尺溇', '燕子河', '丁家庄', '南市', '藕湖浜', '陈公桥', '东阳桥'],
-      addressListAll: ['江寺', '百尺溇', '燕子河', '丁家庄', '南市', '藕湖浜', '陈公桥', '东阳桥'],
+      addressList: [],
+      addressListAll: [],
     }
   },
   methods: {
     hideTabbar () {
       this.$emit('hideTabbar')
     },
-    selectAddress (index) {
-      this.$router.push({ name: 'index', params: { village_id: 1 } })
+    selectAddress (id) {
+      this.$router.push({ name: 'index', params: { village_id: id } })
       this.$emit('showTabbar')
+    },
+    getVillageList () {
+      getVillageList().then(res => {
+        this.addressListAll = res.data.list
+        this.addressList = res.data.list
+      })
     }
   },
   mounted () {
+    document.title = '清廉村社列表'
     this.hideTabbar()
+    this.getVillageList()
   },
   watch: {
     address (newVal) {
       if (newVal === '') {
         this.addressList = this.addressListAll
       } else {
-        this.addressList = this.addressListAll.filter(item => item.includes(newVal))
+        this.addressList = this.addressListAll.filter(item => item.username.includes(newVal))
       }
     }
   }
