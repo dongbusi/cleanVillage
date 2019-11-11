@@ -28,20 +28,17 @@ export default {
     }
   },
   methods: {
-    init () {
-      document.title = '村社概况'
-    },
     getTab () {
       getTab({
         pid: this.$route.params.menu_id,
         street_id: this.$route.params.village_id
       }).then(res => {
         this.navbarList = res.data.list
+        document.title = res.data.one_level
       })
     }
   },
   mounted () {
-    this.init()
     this.getTab()
   },
   watch: {

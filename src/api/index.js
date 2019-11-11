@@ -33,7 +33,7 @@ export function getContents (data) {
 
 export function getInfoList (data) {
   return http({
-    url: 'api.InfoList/get_list',
+    url: 'api.Info_List/get_list',
     method: 'POST',
     data: data
   })
@@ -41,7 +41,7 @@ export function getInfoList (data) {
 
 export function getCardList (data) {
   return http({
-    url: 'api.cardList/get_list',
+    url: 'api.card_List/get_list',
     method: 'POST',
     data: data
   })
@@ -49,7 +49,7 @@ export function getCardList (data) {
 
 export function getLineList (data) {
   return http({
-    url: 'api.LineList/get_list',
+    url: 'api.Line_List/get_list',
     data: data,
     method: 'POST'
   })
@@ -72,7 +72,7 @@ export function getSwiper () {
 
 export function getNewsList (data) {
   return http({
-    url: 'api.NewList/get_list',
+    url: 'api.New_List/get_list',
     data,
     method: 'POST'
   })
@@ -80,7 +80,7 @@ export function getNewsList (data) {
 
 export function getNewsContent (data) {
   return http({
-    url: 'api.NewList/get_details',
+    url: 'api.New_List/get_details',
     data,
     method: 'POST'
   })
@@ -88,7 +88,7 @@ export function getNewsContent (data) {
 
 export function getInspectorDetails (data) {
   return http({
-    url: 'api.inspectorDetais/get_details',
+    url: 'api.inspector_Detais/get_details',
     method: 'POST',
     data
   })
@@ -126,6 +126,23 @@ export function getCommentList (data) {
 export function getCommentDetails (data) {
   return http({
     url: 'api.Woodpecker/get_details',
+    data,
+    method: 'POST'
+  })
+}
+
+export function imageUpload (data) {
+  return http({
+    url: 'http://cx.xianghunet.com/admin.html?s=admin/api.plugs/upload',
+    data,
+    method: 'POST',
+    ContentType: 'multipart/form-data'
+  })
+}
+
+export function comment (data) {
+  return http({
+    url: 'api.Woodpecker/add',
     data,
     method: 'POST'
   })

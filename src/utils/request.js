@@ -22,7 +22,7 @@ service.interceptors.request.use(config => {
 
 // response拦截器
 service.interceptors.response.use(response => {
-  const res = response.data
+  // const res = response.data
   if (response.status !== 200) {
     // Message({
     //   message: res.message,
@@ -33,7 +33,7 @@ service.interceptors.response.use(response => {
     return response.data
   }
 }, error => {
-  console.log('error', error)
+  // console.log('error', error)
   return Promise.reject(error)
 })
 

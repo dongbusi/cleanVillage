@@ -1,9 +1,17 @@
 <template>
   <div class="content">
-    <div class="title"></div>
-    <div class="info"></div>
-    <div class="text"></div>
-    <div class="img"></div>
+    <div class="title ">{{content.title}}</div>
+    <div class="info">
+      <div>{{content.create_at}}</div>
+    </div>
+    <div class="text">{{content.content}}</div>
+    <div class="img">
+      <img :src="item" alt="" v-for="(item, index) in content.image" :key="index">
+    </div>
+    <div class="reply">
+      <div class="reply-header">回复：</div>
+      <div class="reply-content">{{content.reply}}</div>
+    </div>
   </div>
 </template>
 
@@ -23,6 +31,8 @@ export default {
         id: this.$route.params.comment_id,
         street_id: this.$route.params.village_id,
       }).then(res => {
+        res.data.list.create_at = res.data.list.create_at.slice(0, 10)
+        res.data.list.image = res.data.list.image.split('|')
         this.content = res.data.list || {}
       })
     }
@@ -38,7 +48,6 @@ export default {
   /deep/ p {
     font-size: 0.26rem;
     line-height: 1.5;
-    text-indent: 2em;
     text-align: justify;
     margin-top: 0.2rem;
     img {
@@ -49,4 +58,47 @@ export default {
   /deep/ p:first-child {
     margin-top: 0;
   }
+
 }
+.title {
+  font-size: 0.4rem;
+}
+.info {
+  padding: 0.1rem 0;
+  display: flex;
+  align-items: center;
+  div {
+    font-size: 0.24rem;
+    color: #8c8a8a;
+    margin-left: 0.3rem;
+  }
+  div:first-child {
+    margin-left: 0;
+  }
+}
+.text {
+  margin-top: 0.5rem;
+  // border-bottom: 0.01rem solid #cccccc;
+  padding-bottom: 0.4rem;
+  font-size: 0.26rem;
+}
+.img {
+  padding-bottom: 0.4rem;
+  border-bottom: 0.01rem solid #cccccc;
+  img {
+    max-width: 100%;
+    object-fit: cover;
+    margin-top: 0.4rem;
+  }
+}
+.reply {
+  padding: 0.5rem 0;
+}
+.reply-header {
+  font-size: 0.32rem;
+}
+.reply-content {
+  font-size: 0.26rem;
+  margin-top: 0.4rem;
+}
+</style>

@@ -69,17 +69,23 @@ export default {
       })
     },
     getInfoList () {
-      getRecommendInfoList().then(res => {
+      getRecommendInfoList({
+        street_id: this.$route.params.village_id
+      }).then(res => {
         this.infoList = res.data.list
       })
     },
     getSwiper () {
-      getSwiper().then(res => {
+      getSwiper({
+        street_id: this.$route.params.village_id
+      }).then(res => {
         this.swiper = res.data
       })
     },
     getNewsList () {
-      getRecommendNewsList().then(res => {
+      getRecommendNewsList({
+        street_id: this.$route.params.village_id
+      }).then(res => {
         res.data.list.data.forEach(item => {
           item.create_at = item.create_at.slice(0, 10)
         })
@@ -88,6 +94,7 @@ export default {
     }
   },
   mounted () {
+    document.title = '清廉村社'
     this.getMenuList()
     this.getSwiper()
     this.getInfoList()
@@ -101,6 +108,7 @@ export default {
   width: 7.5rem;
   height: 3.5rem;
   object-fit: cover;
+  
 }
 .container__nav {
   padding: 0.4rem 0.24rem 0;

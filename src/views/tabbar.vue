@@ -27,7 +27,9 @@ export default {
   },
   methods: {
     getTabbarRecommend () {
-      getRecommendTabbar().then(res => {
+      getRecommendTabbar({
+        street_id: this.$route.params.village_id
+      }).then(res => {
         this.recommendTabbar = res.data.list
       })
     }

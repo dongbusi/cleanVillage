@@ -1,13 +1,16 @@
 <template>
   <div>
     <div class="input">
-      <van-field v-model="name" placeholder="请输入姓名" />
+      <van-field v-model="name" placeholder="请输入姓名" required />
     </div>
-     <div class="input">
-      <van-field v-model="address" placeholder="请输入住址" />
+    <div class="input">
+      <van-field v-model="address" placeholder="请输入住址" required />
     </div>
-     <div class="input">
-      <van-field v-model="phone" placeholder="请输入电话" />
+    <div class="input">
+      <van-field v-model="phone" placeholder="请输入电话" required type="tel" />
+    </div>
+    <div class="input">
+      <van-field v-model="title" placeholder="请输入标题" required />
     </div>
     <div class="textarea">
       <van-field
@@ -18,36 +21,87 @@
       maxlength="500"
       placeholder="请在此输入文字"
       show-word-limit
+      required
     />
     </div>
     <section class="uploader">
-      <div class="header__uploader">添加照片或视频</div>
+      <div class="header__uploader">添加照片</div>
       <van-uploader
         v-model="fileList"
         multiple
         :max-count="8"
         preview-size="2rem"
+        :after-read="imageUpload"
       />
     </section>
-    <button class="sumbit">上传</button>
+    <button class="sumbit" @click="upload">上传</button>
   </div>
 </template>
 <script>
+
+import { imageUpload, comment } from '../api/index'
+
 export default {
   data () {
     return {
       message: '',
       fileList: [],
+      title: '',
       name: '',
       phone: '',
-      address: ''
+      address: '',
+      imagesUrl: []
     }
   },
   methods: {
-
+    imageUpload (file) {
+      let files
+      if (Array.isArray(file)) {
+        files = file
+      } else {
+        files = [file]
+      }
+      files.forEach(item => {
+        let image = new FormData()
+        image.append('file', item.file)
+        imageUpload(image).then(res => {
+          this.imagesUrl.push(res.url)
+        })
+      })
+    },
+    upload () {
+      if (this.address && this.name && this.message && this.phone && this.title) {
+        comment({
+          street_id: this.$route.params.village_id,
+          content: this.message,
+          username: this.name,
+          address: this.address,
+          telphone: this.phone,
+          title: this.title,
+          image: this.imagesUrl.length > 1 ? this.imagesUrl.join('|') : this.imagesUrl[0]
+        }).then(res => {
+          this.$dialog.alert({
+            title: '提示',
+            message: '上传成功'
+          }).then(() => {
+            this.message = ''
+            this.address = ''
+            this.name = ''
+            this.phone = ''
+            this.fileList = []
+            this.title = ''
+          })
+        })
+      } else {
+        this.$dialog.alert({
+          title: '提示',
+          message: '请填写完整'
+        })
+      }
+    }
   },
   mounted () {
-    
+
   }
 }
 </script>
@@ -94,5 +148,18 @@ export default {
 }
 /deep/ input {
   font-size: 0.26rem !important;
+}
+
+</style>
+
+<style lang="css">
+.van-dialog__header {
+  font-size: 0.36rem;
+}
+.van-dialog__message.van-dialog__message--has-title {
+  font-size: 0.28rem;
+}
+.van-button__text {
+  font-size: 0.28rem;
 }
 </style>

@@ -15,7 +15,7 @@
           <img src="" alt="">
         </div>
         <div class="item__info">
-          <div>{{item.content}}</div>
+          <div>{{item.title}}</div>
           <div>{{item.create_at}}</div>
         </div>
       </div>
