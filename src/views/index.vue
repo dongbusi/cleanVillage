@@ -91,6 +91,31 @@ export default {
         })
         this.newsList = res.data.list
       })
+    },
+    share () {
+      this.$request({
+        url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
+        data: this.$qs.stringify({
+          href: window.location.href
+        }),
+        method: 'post'
+      }).then(res => {
+        res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
+        
+        this.$wx.config(res)
+        this.$wx.ready(() => {
+          this.$wx.onMenuShareAppMessage({
+            title: '清廉村社',
+            desc: document.title || '清廉村社',
+            link: window.location.href
+          })
+          this.$wx.onMenuShareTimeline({
+            title: '清廉村社',
+            link: window.location.href,
+            desc: document.title || '清廉村社'
+          })
+        })
+      })
     }
   },
   mounted () {
@@ -99,6 +124,7 @@ export default {
     this.getSwiper()
     this.getInfoList()
     this.getNewsList()
+    this.share()
   }
 }
 </script>

@@ -40,10 +40,36 @@ export default {
       }).then(res => {
         this.content = res.data
       })
+    },
+    share () {
+      this.$request({
+        url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
+        data: this.$qs.stringify({
+          href: window.location.href
+        }),
+        method: 'post'
+      }).then(res => {
+        res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
+        
+        this.$wx.config(res)
+        this.$wx.ready(() => {
+          this.$wx.onMenuShareAppMessage({
+            title: '清廉村社',
+            desc: document.title || '清廉村社',
+            link: window.location.href
+          })
+          this.$wx.onMenuShareTimeline({
+            title: '清廉村社',
+            link: window.location.href,
+            desc: document.title || '清廉村社'
+          })
+        })
+      })
     }
   },
   mounted () {
     this.getContent()
+    this.share()
   }
 }
 </script>
@@ -57,6 +83,7 @@ export default {
   width: 2.5rem;
   height: 3rem;
   flex: none;
+  object-fit: cover;
 }
 .inspector-info {
   margin-left: 1rem;

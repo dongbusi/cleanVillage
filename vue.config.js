@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'development' ? './' : '/street/',
+  publicPath: process.env.NODE_ENV === 'development' ? '/' : '/street',
   assetsDir: 'assets',
   devServer: {
     proxy: {
@@ -8,9 +8,8 @@ module.exports = {
         changeOrigin: true
       }
     },
-    host: '168.100.188.47',
+    host: '0.0.0.0',
     hot: true,
-    disableHostCheck: true,
-    https: true
+    disableHostCheck: true
   }
 }

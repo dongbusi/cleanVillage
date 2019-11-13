@@ -60,7 +60,7 @@ const routes = [
 
 const router = new VueRouter({
   routes,
-  base: '/street/',
+  base: process.env.VUE_APP_BASE_ROUTER,
   mode: 'history'
 })
 

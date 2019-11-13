@@ -63,10 +63,11 @@ export function getVillageList (data) {
   })
 }
 
-export function getSwiper () {
+export function getSwiper (data) {
   return http({
     url: 'api.carousel/gets',
-    method: 'POST'
+    method: 'POST',
+    data
   })
 }
 
@@ -97,21 +98,24 @@ export function getInspectorDetails (data) {
 export function getRecommendInfoList (data) {
   return http({
     url: 'api.Menu/recommend_1',
-    method: 'POST'
+    method: 'POST',
+    data
   })
 }
 
 export function getRecommendNewsList (data) {
   return http({
     url: 'api.Menu/recommend_2',
-    method: 'POST'
+    method: 'POST',
+    data
   })
 }
 
 export function getRecommendTabbar (data) {
   return http({
     url: 'api.Menu/recommend_3',
-    method: 'POST'
+    method: 'POST',
+    data
   })
 }
 
