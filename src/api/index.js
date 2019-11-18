@@ -151,3 +151,35 @@ export function comment (data) {
     method: 'POST'
   })
 }
+
+export function getNormalList (data) {
+  return http({
+    url: 'api.new_second_list/get_list',
+    data,
+    method: 'POST'
+  })
+}
+
+export function getNormalDetails (data) {
+  return http({
+    url: 'api.new_second_list/get_details',
+    data,
+    method: 'POST'
+  })
+}
+
+export function getLabelList (data) {
+  return http({
+    url: 'api.tag_details/get_list',
+    data,
+    method: 'POST'
+  })
+}
+
+export function getLabelDetails (data) {
+  return http({
+    url: 'api.tag_details/get_details',
+    data,
+    method: 'POST'
+  })
+}

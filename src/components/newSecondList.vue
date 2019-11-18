@@ -1,11 +1,8 @@
 <template>
   <div>
     <div class="list">
-      <div class="item" v-for="(item, index) in list" :key="index" @click="goDetails(item.id)">
-        <div class="item__header">
-          <div>{{item.title}}</div>
-          <div>{{item.create_at}}</div>
-        </div>
+      <div class="item" v-for="(item, index) in list" :key="index" @click="goNewsList(item.id)">
+        <div>{{item.title}}</div>
       </div>
     </div>
   </div>
@@ -13,7 +10,7 @@
 
 <script>
 
-import { getNewsList, getNormalList } from '../api/index'
+import { getNormalList } from '../api/index'
 
 export default {
   data () {
@@ -26,48 +23,32 @@ export default {
   },
   props: {
     id: {
+      required: true,
       type: Number,
       default: 0
     }
   },
   methods: {
-    goDetails (id) {
-      this.$router.push({ name: 'newsDetails', params: { details_id: id }, query: { tab_id: this.id } })
+    goNewsList (id) {
+      this.$router.push({ name: 'newsList', params: { newlist_id: id } })
     },
     getList () {
       this.loading = true
-      if (this.$route.params.newlist_id) {
-        getNormalList({
-          pid: this.id,
-          street_id: this.$route.params.village_id,
-          limit: this.limit,
-          page: this.page + 1,
-          type: 1,
-          new_pid: this.$route.params.newlist_id
-        }).then(res => {
-          res.data.list.list.forEach(item => {
-            item.create_at = item.create_at.slice(0, 10)
-          })
-          this.list = [...this.list, ...res.data.list.list]
-          this.loading = false
-          this.page = res.data.list.page.current
+      getNormalList({
+        pid: this.id,
+        street_id: this.$route.params.village_id,
+        limit: this.limit,
+        page: this.page + 1,
+        type: 1,
+        new_pid: 0
+      }).then(res => {
+        res.data.list.list.forEach(item => {
+          item.create_at = item.create_at.slice(0, 10)
         })
-      } else {
-        getNewsList({
-          pid: this.id,
-          street_id: this.$route.params.village_id,
-          limit: this.limit,
-          page: this.page + 1,
-          type: 1
-        }).then(res => {
-          res.data.list.list.forEach(item => {
-            item.create_at = item.create_at.slice(0, 10)
-          })
-          this.list = [...this.list, ...res.data.list.list]
-          this.loading = false
-          this.page = res.data.list.page.current
-        })
-      }
+        this.list = [...this.list, ...res.data.list.list]
+        this.loading = false
+        this.page = res.data.list.page.current
+      })
     },
     scroll () {
       let height = document.documentElement.clientHeight || document.body.clientHeight;
@@ -122,22 +103,16 @@ export default {
   margin-top: -0.34rem;
 }
 .item {
-  border-bottom: 1px solid #E5E5E5;
-}
-.item__header {
   height: 1.04rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #E5E5E5;
 }
-.item__header > div:first-child {
-  width: 4.6rem;
+.item > div:first-child {
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.item__header div {
-  font-size: 0.26rem;
-  font-family: 'MicrosoftYaHei-light'
 }
 </style>

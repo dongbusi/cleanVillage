@@ -14,10 +14,11 @@ import qs from 'qs'
 Vue.use(Vant);
 Vue.use(globalComponents);
 
-Vue.config.productionTip = false
-Vue.prototype.$qs = qs
-Vue.prototype.$request = request
-Vue.prototype.$wx = wx
+Vue.prototype.$qs = qs;
+Vue.prototype.$request = request;
+Vue.prototype.$wx = wx;
+
+Vue.config.productionTip = false;
 
 new Vue({
   router,

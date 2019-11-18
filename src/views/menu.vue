@@ -6,7 +6,7 @@
           <van-tab v-for="(item, index) in navbarList" :key="index" :title="item.title" class="tabs" :to="{name: 'tab', params: {tab_index: index}}">
             <div class="container__tab">
               <div>
-                <router-view v-if="showDetails" :id="navbarList[navbar].id"></router-view>
+                <router-view v-if="showDetails || showNews" :id="navbarList[navbar].id"></router-view>
                 <component v-else :is="navbarList[navbar].tag" :id="navbarList[navbar].id" :name="navbarList[navbar].title"></component>
               </div>
             </div>
@@ -24,7 +24,8 @@ export default {
     return {
       navbar: Number(this.$route.params.tab_index) || 0,
       navbarList: [],
-      showDetails: this.$route.name === 'details'
+      showDetails: this.$route.name === 'details',
+      showNews: this.$route.name === 'newsList' || this.$route.name === 'newsDetails' || this.$route.name === 'labelDetails'
     }
   },
   methods: {
@@ -46,7 +47,6 @@ export default {
         method: 'post'
       }).then(res => {
         res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
-        
         this.$wx.config(res)
         this.$wx.ready(() => {
           this.$wx.onMenuShareAppMessage({
@@ -73,6 +73,11 @@ export default {
         this.showDetails = true
       } else {
         this.showDetails = false
+      }
+      if (newVal.name === 'newsList' || newVal.name === 'newsDetails' || newVal.name === 'labelDetails') {
+        this.showNews = true
+      } else {
+        this.showNews = false
       }
       if (Number(newVal.params.tab_index) !== this.navbar) {
         this.navbar = Number(newVal.params.tab_index)

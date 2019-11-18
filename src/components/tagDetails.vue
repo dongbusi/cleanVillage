@@ -1,10 +1,17 @@
 <template>
   <div>
     <div class="list">
-      <div class="item" v-for="(item, index) in list" :key="index" @click="goDetails(item.id)">
+      <div class="item" v-for="(item, index) in list" :key="index">
         <div class="item__header">
           <div>{{item.title}}</div>
           <div>{{item.create_at}}</div>
+        </div>
+        <div class="item__label">
+          <div @click="goDetails(item.id, 1)">立项</div>
+          <div @click="goDetails(item.id, 2)">招投标</div>
+          <div @click="goDetails(item.id, 3)">合同</div>
+          <div @click="goDetails(item.id, 4)">验收</div>
+          <div @click="goDetails(item.id, 5)">决算</div>
         </div>
       </div>
     </div>
@@ -13,7 +20,7 @@
 
 <script>
 
-import { getNewsList, getNormalList } from '../api/index'
+import { getLabelList } from '../api/index'
 
 export default {
   data () {
@@ -31,43 +38,24 @@ export default {
     }
   },
   methods: {
-    goDetails (id) {
-      this.$router.push({ name: 'newsDetails', params: { details_id: id }, query: { tab_id: this.id } })
+    goDetails (id, type) {
+      this.$router.push({ name: 'labelDetails', params: { details_id: id }, query: { tab_id: this.id, type: type } })
     },
     getList () {
       this.loading = true
-      if (this.$route.params.newlist_id) {
-        getNormalList({
-          pid: this.id,
-          street_id: this.$route.params.village_id,
-          limit: this.limit,
-          page: this.page + 1,
-          type: 1,
-          new_pid: this.$route.params.newlist_id
-        }).then(res => {
-          res.data.list.list.forEach(item => {
-            item.create_at = item.create_at.slice(0, 10)
-          })
-          this.list = [...this.list, ...res.data.list.list]
-          this.loading = false
-          this.page = res.data.list.page.current
+      getLabelList({
+        pid: this.id,
+        street_id: this.$route.params.village_id,
+        limit: this.limit,
+        page: this.page + 1
+      }).then(res => {
+        res.data.list.list.forEach(item => {
+          item.create_at = item.create_at.slice(0, 10)
         })
-      } else {
-        getNewsList({
-          pid: this.id,
-          street_id: this.$route.params.village_id,
-          limit: this.limit,
-          page: this.page + 1,
-          type: 1
-        }).then(res => {
-          res.data.list.list.forEach(item => {
-            item.create_at = item.create_at.slice(0, 10)
-          })
-          this.list = [...this.list, ...res.data.list.list]
-          this.loading = false
-          this.page = res.data.list.page.current
-        })
-      }
+        this.list = [...this.list, ...res.data.list.list]
+        this.loading = false
+        this.page = res.data.list.page.current
+      })
     },
     scroll () {
       let height = document.documentElement.clientHeight || document.body.clientHeight;
@@ -139,5 +127,19 @@ export default {
 .item__header div {
   font-size: 0.26rem;
   font-family: 'MicrosoftYaHei-light'
+}
+.item__label {
+  display: flex;
+  padding-bottom: 0.3rem;
+}
+.item__label div {
+  padding: 0.1rem 0.2rem;
+  background: #fad60e;
+  margin-left: 0.25rem;
+  border-radius: 0.4rem;
+  font-size: 0.26rem;
+}
+.item__label div:first-child {
+  margin-left: 0;
 }
 </style>

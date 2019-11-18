@@ -3,12 +3,11 @@
     <div class="title">{{content.title}}</div>
     <div class="content" v-html="content.content"></div>
   </div>
- 
 </template>
 
 <script>
 
-import { getNewsContent } from '../api/index'
+import { getNewsContent, getNormalDetails, getLabelDetails } from '../api/index'
 
 export default {
   data () {
@@ -18,13 +17,32 @@ export default {
   },
   methods: {
     getContent () {
-      getNewsContent({
-        id: this.$route.params.details_id,
-        pid: this.$route.query.tab_id,
-        street_id: this.$route.params.village_id,
-      }).then(res => {
-        this.content = res.data || {}
-      })
+      if (this.$route.name === 'newsDetails') {
+        getNormalDetails({
+          id: this.$route.params.details_id,
+          pid: this.$route.query.tab_id,
+          street_id: this.$route.params.village_id
+        }).then(res => {
+          this.content = res.data || {}
+        })
+      } else if (this.$route.name === 'labelDetails') {
+        getLabelDetails({
+          id: this.$route.params.details_id,
+          pid: this.$route.query.tab_id,
+          street_id: this.$route.params.village_id,
+          type: this.$route.query.type,
+        }).then(res => {
+          this.content = res.data || {}
+        })
+      } else {
+        getNewsContent({
+          id: this.$route.params.details_id,
+          pid: this.$route.query.tab_id,
+          street_id: this.$route.params.village_id
+        }).then(res => {
+          this.content = res.data || {}
+        })
+      }
     },
     share () {
       this.$request({
@@ -79,6 +97,6 @@ export default {
 .title {
   font-size: 0.4rem;
   color: #333333;
-  text-align: center;
+  // text-align: center;
 }
-</style> 
+</style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container__inspector" v-for="(item, index) in list" :key="index">
-      <img :src="item.photo_img" alt="" class="inspector-avatur">
+      <img :src="item.photo_img" alt="" class="inspector-avatur" @click="showImage(item.photo_img)">
       <div class="inspector-info">
         <div>{{item.realname}}</div>
         <div>职务：{{item.job}}<br>电话：{{item.telphone}}</div>
@@ -14,6 +14,7 @@
 <script>
 
 import { getInfoList } from '../api/index'
+import { ImagePreview } from 'vant'
 
 export default {
   data () {
@@ -83,6 +84,14 @@ export default {
           })
         })
       })
+    },
+    showImage (img) {
+      ImagePreview({
+        images: [
+          img
+        ],
+        startPosition: 0,
+      })
     }
   },
   mounted () {
@@ -138,5 +147,8 @@ export default {
   }
   .van-loading__spinner.van-loading__spinner--circular::-webkit-scrollbar-track-piece {
     background: none ;
+  }
+  .van-image-preview__index, .van-image__img {
+    background: #000;
   }
 </style>

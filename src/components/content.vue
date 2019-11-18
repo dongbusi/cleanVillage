@@ -1,10 +1,11 @@
 <template>
-  <div class="content" v-html="content.content"></div>
+  <div class="content" v-html="content.content" @click="showImage($event)"></div>
 </template>
 
 <script>
 
 import { getContents } from '../api/index'
+import { ImagePreview } from 'vant'
 
 export default {
   data () {
@@ -28,6 +29,14 @@ export default {
         this.content = res.data || {}
       })
     },
+    // showImage (e) {
+    //   if (e.target.nodeName === 'IMG') {
+    //     ImagePreview({
+    //       images: [e.target.currentSrc],
+    //       startPosition: 0
+    //     })
+    //   }
+    // },
     share () {
       this.$request({
         url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
@@ -37,7 +46,6 @@ export default {
         method: 'post'
       }).then(res => {
         res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
-        
         this.$wx.config(res)
         this.$wx.ready(() => {
           this.$wx.onMenuShareAppMessage({

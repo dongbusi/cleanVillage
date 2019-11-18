@@ -27,6 +27,21 @@ const routes = [
             path: 'details/:details_id',
             name: 'details',
             component: () => import('../views/details.vue')
+          },
+          {
+            path: 'news/:newlist_id',
+            name: 'newsList',
+            component: () => import('../components/newsList.vue')
+          },
+          {
+            path: 'newsdetails/:details_id',
+            name: 'newsDetails',
+            component: () => import('../views/details.vue')
+          },
+          {
+            path: 'labeldetails/:details_id',
+            name: 'labelDetails',
+            component: () => import('../views/details.vue')
           }
         ]
       },
@@ -66,18 +81,5 @@ const router = new VueRouter({
   base: process.env.VUE_APP_SRC,
   mode: 'history'
 })
-
-// router.afterEach((to, from) => {
-//   http({
-//     url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
-//     method: 'POST',
-//     data: qs.stringify({
-//       href: window.location.hostname + to.fullPath
-//     })
-//   }).then(res => {
-//     res['jsApiList'] = ['updateAppMessageShareData', 'updateTimelineShareData']
-//     wx.config(res)
-//   })
-// })
 
 export default router

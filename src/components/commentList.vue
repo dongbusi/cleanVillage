@@ -1,7 +1,7 @@
 <template>
   <div>
     <section class="container__inspector">
-      <img :src="info.photo_img" alt="" class="inspector-avatur">
+      <img :src="info.photo_img" alt="" class="inspector-avatur" @click="showImage(info.photo_img)">
       <div class="inspector-info">
         <div>{{info.realname}}</div>
         <div>职务：{{info.job}}<br>电话：{{info.telphone}}</div>
@@ -25,6 +25,7 @@
 <script>
 
 import { getCommentList } from '../api/index'
+import { ImagePreview } from 'vant'
 
 export default {
   data () {
@@ -93,6 +94,14 @@ export default {
             desc: document.title || '清廉村社'
           })
         })
+      })
+    },
+    showImage (img) {
+      ImagePreview({
+        images: [
+          img
+        ],
+        startPosition: 0,
       })
     }
   },
@@ -185,4 +194,10 @@ export default {
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
 }
+</style>
+
+<style lang="css">
+  .van-image-preview__index, .van-image__img {
+    background: #000;
+  }
 </style>

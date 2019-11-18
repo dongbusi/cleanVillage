@@ -11,7 +11,7 @@
         <div>支部委员：{{item.user}}</div>
         <div>支部党员：{{item.party_user}}</div>
         <div class="photo">
-          <img :src="itemChild" alt="" v-for="(itemChild, indexChild) in item.images" :key="indexChild">
+          <img :src="itemChild" v-for="(itemChild, indexChild) in item.images" :key="indexChild" @click="showImage(item.images, indexChild)">
         </div>
       </div>
     </div>
@@ -21,6 +21,7 @@
 <script>
 
 import { getCardList } from '../api/index'
+import { ImagePreview } from 'vant'
 
 export default {
   data () {
@@ -95,6 +96,12 @@ export default {
             desc: document.title || '清廉村社'
           })
         })
+      })
+    },
+    showImage (img, index) {
+      ImagePreview({
+        images: img,
+        startPosition: Number(index),
       })
     }
   },
