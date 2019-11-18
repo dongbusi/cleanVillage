@@ -1,5 +1,9 @@
 <template>
-  <div class="content" v-html="content.content"></div>
+  <div>
+    <div class="title">{{content.title}}</div>
+    <div class="content" v-html="content.content"></div>
+  </div>
+ 
 </template>
 
 <script>
@@ -56,6 +60,7 @@ export default {
 
 <style lang="scss" scoped>
 .content {
+  margin-top: 0.4rem;
   /deep/ p {
     font-size: 0.26rem;
     line-height: 1.5;
@@ -70,5 +75,10 @@ export default {
   /deep/ p:first-child {
     margin-top: 0;
   }
+}
+.title {
+  font-size: 0.4rem;
+  color: #333333;
+  text-align: center;
 }
 </style> 

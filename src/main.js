@@ -12,7 +12,7 @@ import request from './utils/request'
 import qs from 'qs'
 
 Vue.use(Vant);
-Vue.use(globalComponents)
+Vue.use(globalComponents);
 
 Vue.config.productionTip = false
 Vue.prototype.$qs = qs

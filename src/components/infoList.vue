@@ -46,10 +46,10 @@ export default {
       })
     },
     scroll () {
-      let height = document.documentElement.clientHeight;
-      let scrollTop = document.documentElement.scrollTop;
-      let scrollHeight = document.documentElement.scrollHeight;
-      if (scrollHeight - height - scrollTop === 0 && this.loading === false) {
+      let height = document.documentElement.clientHeight || document.body.clientHeight;
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      if (scrollHeight - height - scrollTop <= 0 && this.loading === false) {
         this.getList()
       }
     },
@@ -95,7 +95,7 @@ export default {
 
 <style lang="scss" scoped>
 .container__inspector {
-  padding: 0 0.44rem 0.5rem;
+  padding: 0 0 0.5rem;
   display: flex;
   height: 3rem;
 }
@@ -106,8 +106,8 @@ export default {
   object-fit: cover;
 }
 .inspector-info {
-  margin-left: 1rem;
-  flex: none;
+  margin-left: 0.5rem;
+  // flex: none;
 }
 .inspector-info div:first-child {
   font-family:'MicrosoftYaHei-bold';
@@ -131,4 +131,12 @@ export default {
   width: 2.8rem;
   text-align: justify;
 }
+</style>
+<style lang="css">
+  .van-loading__spinner.van-loading__spinner--circular, .van-loading__spinner.van-loading__spinner--circular, .van-toast__text, .van-toast__loading {
+    background: none;
+  }
+  .van-loading__spinner.van-loading__spinner--circular::-webkit-scrollbar-track-piece {
+    background: none ;
+  }
 </style>

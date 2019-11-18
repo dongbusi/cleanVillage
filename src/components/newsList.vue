@@ -51,10 +51,10 @@ export default {
       })
     },
     scroll () {
-      let height = document.documentElement.clientHeight;
-      let scrollTop = document.documentElement.scrollTop;
-      let scrollHeight = document.documentElement.scrollHeight;
-      if (scrollHeight - height - scrollTop === 0 && this.loading === false) {
+      let height = document.documentElement.clientHeight || document.body.clientHeight;
+      let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      if (scrollHeight - height - scrollTop <= 0 && this.loading === false) {
         this.getList()
       }
     },

@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import index from '../views/index.vue'
 import layout from '../views/layout'
+import http from '../utils/request'
+import qs from 'qs'
+import wx from 'weixin-js-sdk'
 
 Vue.use(VueRouter)
 
@@ -60,8 +63,21 @@ const routes = [
 
 const router = new VueRouter({
   routes,
-  base: process.env.VUE_APP_BASE_ROUTER,
+  base: process.env.VUE_APP_SRC,
   mode: 'history'
 })
+
+// router.afterEach((to, from) => {
+//   http({
+//     url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
+//     method: 'POST',
+//     data: qs.stringify({
+//       href: window.location.hostname + to.fullPath
+//     })
+//   }).then(res => {
+//     res['jsApiList'] = ['updateAppMessageShareData', 'updateTimelineShareData']
+//     wx.config(res)
+//   })
+// })
 
 export default router

@@ -105,7 +105,11 @@ export default {
   background: #ffffff;
   padding: 0.5rem 0.44rem;
   line-height: 1.5;
-  margin-bottom: 2rem;
+}
+.container__tab::after {
+  display: block;
+  content: '';
+  height: 1.6rem;
 }
 
 </style>

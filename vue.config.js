@@ -1,15 +1,12 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'development' ? '/' : '/street',
+  publicPath: process.env.VUE_APP_SRC,
   assetsDir: 'assets',
+  outputDir: 'street',
   devServer: {
-    proxy: {
-      '/': {
-        target: 'https://cx.xianghunet.com/admin.html?s=team/', // 要访问的接口域名
-        changeOrigin: true
-      }
-    },
     host: '0.0.0.0',
+    public: '168.100.188.47:8080',
     hot: true,
-    disableHostCheck: true
+    disableHostCheck: true,
+    historyApiFallback: true
   }
 }

@@ -9,8 +9,6 @@
       </div>
     </section>
     <section class="address" v-html="content.content">
-      <!-- <img src="http://static.runoob.com/images/demo/demo2.jpg" alt="">
-      <div>地址：监察联络员 </div> -->
     </section>
   </div>
 </template>
@@ -86,7 +84,7 @@ export default {
   object-fit: cover;
 }
 .inspector-info {
-  margin-left: 1rem;
+  margin-left: 0.5rem;
   flex: none;
 }
 .inspector-info div:first-child {
