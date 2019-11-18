@@ -29,14 +29,14 @@ export default {
         this.content = res.data || {}
       })
     },
-    // showImage (e) {
-    //   if (e.target.nodeName === 'IMG') {
-    //     ImagePreview({
-    //       images: [e.target.currentSrc],
-    //       startPosition: 0
-    //     })
-    //   }
-    // },
+    showImage (e) {
+      if (e.target.nodeName === 'IMG') {
+        ImagePreview({
+          images: [e.target.currentSrc],
+          startPosition: 0
+        })
+      }
+    },
     share () {
       this.$request({
         url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
