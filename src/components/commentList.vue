@@ -1,14 +1,5 @@
 <template>
-  <div>
-    <section class="container__inspector">
-      <img :src="info.photo_img" alt="" class="inspector-avatur" @click="showImage(info.photo_img)">
-      <div class="inspector-info">
-        <div>{{info.realname}}</div>
-        <div>职务：{{info.job}}<br>电话：{{info.telphone}}</div>
-        <div>一句话承诺：<br>{{info.motto}}</div>
-      </div>
-    </section>
-    <section class="gap"></section>
+  <div v-if="list && list.length">
     <section class="container__commentlist">
       <div class="item__commentlist" @click="goDetails(item.id)" v-for="(item, index) in list" :key="index">
         <div class="item__thumb">
@@ -20,7 +11,12 @@
         </div>
       </div>
     </section>
+    <div class="add" @click="addComment">
+      <div></div>
+      <div></div>
+    </div>
   </div>
+  <div v-else-if="!list.length && loading === false" >暂无内容！</div>
 </template>
 <script>
 
@@ -41,6 +37,9 @@ export default {
     goDetails (id) {
       this.$router.push({ name: 'commentDetails', params: { comment_id: id } })
     },
+    addComment () {
+      this.$router.push({ name: 'comment' })
+    },
     getContent () {
       this.loading = true
       getCommentList({
@@ -55,6 +54,8 @@ export default {
         this.list = [...this.list, ...res.data.list.list]
         this.loading = false
         this.page = res.data.list.page.current
+      }).catch(() => {
+        this.loading = false
       })
     },
     scroll () {
@@ -193,6 +194,32 @@ export default {
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   -webkit-line-clamp: 2;
+}
+.add {
+  width: 0.8rem;
+  height: 0.8rem;
+  background: #F18C79;
+  position: fixed;
+  right: 0.8rem;
+  bottom: 2.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  div:first-child {
+    background: #ffffff;
+    width: 60%;
+    height: 0.04rem;
+    border-radius: 0.04rem;
+    position: absolute;
+  }
+  div:last-child {
+    background: #ffffff;
+    height: 60%;
+    width: 0.04rem;
+    border-radius: 0.04rem;
+    position: absolute;
+  }
 }
 </style>
 

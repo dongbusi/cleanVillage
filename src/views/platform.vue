@@ -8,7 +8,7 @@
               <router-view :tab="navbar"></router-view>
             </div>
           </van-tab>
-          <van-tab :title="navbarList[1]" class="tabs" :to="{ name: 'comment' }">
+          <van-tab :title="navbarList[1]" class="tabs" :to="{ name: 'chat' }">
             <div class="container__tab">
               <router-view :tab="navbar"></router-view>
             </div>
@@ -24,7 +24,7 @@ export default {
   data () {
     return {
       navbar: Number(this.$route.params.id) || 0,
-      navbarList: ['监察联络员信息', '我有话说']
+      navbarList: ['我有话说', '实时主题互动']
     }
   },
   methods: {
@@ -61,7 +61,7 @@ export default {
     this.setTitle()
     if (this.$route.name === 'commentList') {
       this.navbar = 0
-    } else if (this.$route.name === 'comment') {
+    } else if (this.$route.name === 'chat') {
       this.navbar = 1
     }
     this.share()

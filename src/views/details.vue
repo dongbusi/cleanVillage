@@ -21,7 +21,7 @@ export default {
         getNormalDetails({
           id: this.$route.params.details_id,
           pid: this.$route.query.tab_id,
-          street_id: this.$route.params.village_id
+          street_id: Number(this.$route.params.village_id)
         }).then(res => {
           this.content = res.data || {}
         })
@@ -97,6 +97,6 @@ export default {
 .title {
   font-size: 0.4rem;
   color: #333333;
-  // text-align: center;
+  text-align: center;
 }
 </style>

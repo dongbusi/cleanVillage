@@ -26,6 +26,12 @@ export default {
   },
   mounted () {
 
+  },
+  provide () {
+    return {
+      hideTabbar: this.hideTabbar,
+      showTabbar: this.showTabbar
+    }
   }
 }
 </script>

@@ -1,11 +1,12 @@
 <template>
-  <div>
+  <div v-if="list && list.length">
     <div class="list">
       <div class="item" v-for="(item, index) in list" :key="index" @click="goNewsList(item.id)">
         <div>{{item.title}}</div>
       </div>
     </div>
   </div>
+  <div v-else-if="!list.length && loading === false" >暂无内容！</div>
 </template>
 
 <script>
@@ -48,6 +49,8 @@ export default {
         this.list = [...this.list, ...res.data.list.list]
         this.loading = false
         this.page = res.data.list.page.current
+      }).catch(() => {
+        this.loading = false
       })
     },
     scroll () {

@@ -1,5 +1,6 @@
 <template>
-  <div class="content" v-html="content.content" @click="showImage($event)"></div>
+  <div v-if="content" class="content" v-html="content.content" @click="showImage($event)"></div>
+  <div v-else-if="!content && loading === false" >暂无内容！</div>
 </template>
 
 <script>
@@ -10,7 +11,8 @@ import { ImagePreview } from 'vant'
 export default {
   data () {
     return {
-      content: ''
+      content: '',
+      loading: false
     }
   },
   props: {
@@ -22,11 +24,16 @@ export default {
   },
   methods: {
     getContent () {
+      this.loading = true
       getContents({
         pid: this.id,
         street_id: this.$route.params.village_id
       }).then(res => {
         this.content = res.data || {}
+        this.loading = false
+      }).catch(err => {
+        console.log(err)
+        this.loading = false
       })
     },
     showImage (e) {

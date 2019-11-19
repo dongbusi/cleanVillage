@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="content">
     <section class="container__inspector">
       <img :src="content.photo_img" alt="" class="inspector-avatur" @click="showImage(content.photo_img)">
       <div class="inspector-info">
@@ -11,6 +11,7 @@
     <section class="address" v-html="content.content">
     </section>
   </div>
+  <div v-else-if="!content && loading === false" >暂无内容！</div>
 </template>
 
 <script>
@@ -21,7 +22,8 @@ import { ImagePreview } from 'vant'
 export default {
   data () {
     return {
-      content: ''
+      content: '',
+      loading: false
     }
   },
   props: {
@@ -33,11 +35,15 @@ export default {
   },
   methods: {
     getContent () {
+      this.loading = true
       getInspectorDetails({
         pid: this.id,
         street_id: this.$route.params.village_id
       }).then(res => {
         this.content = res.data
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
     },
     share () {

@@ -1,10 +1,11 @@
-<template lang="">
-  <div>
+<template>
+  <div v-if="list && list.length">
     <div class="resident-list">
       <div class="resident-item">{{name}}</div>
       <div class="resident-item" v-for="(item, index) in list" :key="index">{{item}}</div>
     </div>
   </div>
+  <div v-else-if="!list.length && loading === false" >暂无内容！</div>
 </template>
 
 <script>
@@ -41,6 +42,8 @@ export default {
         this.$nextTick(() => {
           this.loading = false
         })
+      }).catch(() => {
+        this.loading = false
       })
     },
     share () {

@@ -7,7 +7,8 @@
             <div class="container__tab">
               <div>
                 <router-view v-if="showDetails || showNews" :id="navbarList[navbar].id"></router-view>
-                <component v-else :is="navbarList[navbar].tag" :id="navbarList[navbar].id" :name="navbarList[navbar].title"></component>
+                <div v-else-if="navbarList[navbar].tag === ''">暂无内容！</div>
+                <component ref="list" v-else :is="navbarList[navbar].tag" :id="navbarList[navbar].id" :name="navbarList[navbar].title"></component>
               </div>
             </div>
           </van-tab>

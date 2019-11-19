@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="list && list.length">
     <div class="list">
       <div class="item" v-for="(item, index) in list" :key="index" @click="goDetails(item.id)">
         <div class="item__header">
@@ -9,6 +9,7 @@
       </div>
     </div>
   </div>
+  <div v-else-if="!list.length && loading === false" >暂无内容！</div>
 </template>
 
 <script>
@@ -21,7 +22,7 @@ export default {
       list: [],
       loading: false,
       page: 0,
-      limit: 6
+      limit: 15
     }
   },
   props: {
@@ -32,7 +33,11 @@ export default {
   },
   methods: {
     goDetails (id) {
-      this.$router.push({ name: 'newsDetails', params: { details_id: id }, query: { tab_id: this.id } })
+      if (this.$route.params.newlist_id) {
+        this.$router.push({ name: 'newsDetails', params: { details_id: id }, query: { tab_id: this.id } })
+      } else {
+        this.$router.push({ name: 'details', params: { details_id: id }, query: { tab_id: this.id } })
+      }
     },
     getList () {
       this.loading = true
@@ -51,6 +56,8 @@ export default {
           this.list = [...this.list, ...res.data.list.list]
           this.loading = false
           this.page = res.data.list.page.current
+        }).catch(() => {
+          this.loading = false
         })
       } else {
         getNewsList({
@@ -112,6 +119,14 @@ export default {
     this.getList()
     this.watchScroll()
     this.share()
+  },
+  watch: {
+    id (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.page = 0
+        this.getList()
+      }
+    }
   }
 }
 </script>

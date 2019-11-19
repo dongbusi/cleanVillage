@@ -61,6 +61,11 @@ const routes = [
             component: () => import('../components/comment.vue')
           },
           {
+            path: 'chat',
+            name: 'chat',
+            component: () => import('../components/chat.vue')
+          },
+          {
             path: 'details/:comment_id',
             name: 'commentDetails',
             component: () => import('../components/commentDetails.vue')

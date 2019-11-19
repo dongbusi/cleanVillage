@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="list && list.length">
     <div class="tab-header">
       {{info}}
     </div>
@@ -16,6 +16,7 @@
       </div>
     </div>
   </div>
+  <div v-else-if="!list.length && loading === false" >暂无内容！</div>
 </template>
 
 <script>
@@ -57,6 +58,8 @@ export default {
         this.info = res.data.list.text
         this.loading = false
         this.page = res.data.list.page.current
+      }).catch(() => {
+        this.loading = false
       })
     },
     scroll () {
