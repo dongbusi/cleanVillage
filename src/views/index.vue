@@ -105,21 +105,21 @@ export default {
         this.$wx.config(res)
         this.$wx.ready(() => {
           this.$wx.onMenuShareAppMessage({
-            title: '清廉村社',
-            desc: document.title || '清廉村社',
+            title: sessionStorage.villageName + '·清廉村社',
+            desc: sessionStorage.villageName + '·清廉村社',
             link: window.location.href
           })
           this.$wx.onMenuShareTimeline({
-            title: '清廉村社',
+            title: sessionStorage.villageName + '·清廉村社',
             link: window.location.href,
-            desc: document.title || '清廉村社'
+            desc: sessionStorage.villageName + '·清廉村社'
           })
         })
       })
     }
   },
   mounted () {
-    document.title = '清廉村社'
+    document.title = sessionStorage.villageName + '·清廉村社'
     this.getMenuList()
     this.getSwiper()
     this.getInfoList()

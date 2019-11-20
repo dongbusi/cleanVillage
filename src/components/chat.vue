@@ -35,10 +35,36 @@ export default {
   methods: {
     submit () {
       this.message = ''
+    },    
+    share () {
+      this.$request({
+        url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
+        data: this.$qs.stringify({
+          href: window.location.href
+        }),
+        method: 'post'
+      }).then(res => {
+        res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
+        
+        this.$wx.config(res)
+        this.$wx.ready(() => {
+          this.$wx.onMenuShareAppMessage({
+            title: sessionStorage.villageName + '·清廉村社',
+            desc: document.title || sessionStorage.villageName + '·清廉村社',
+            link: window.location.href
+          })
+          this.$wx.onMenuShareTimeline({
+            title: sessionStorage.villageName + '·清廉村社',
+            link: window.location.href,
+            desc: document.title || sessionStorage.villageName + '·清廉村社'
+          })
+        })
+      })
     }
   },
   mounted () {
     this.hideTabbar()
+    this.share()
   },
   beforeDestroy () {
     this.showTabbar()
@@ -71,6 +97,11 @@ export default {
   margin-top: 0.84rem;
   display: flex;
   flex-direction: column;
+  &::after {
+    display: block;
+    content: '';
+    height: 1.5rem;
+  }
   .item__controller {
     width: 5.6rem;
     padding: 0.24rem 0.32rem;
@@ -83,7 +114,7 @@ export default {
     text-align: justify;
   }
   div {
-    margin-top: 1rem;
+    margin-top: 0.3rem;
   }
   div:first-child {
     margin-top: 0;

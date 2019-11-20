@@ -1,6 +1,6 @@
 <template>
-  <div v-if="list && list.length">
-    <section class="container__commentlist">
+  <div>
+    <section v-if="list && list.length" class="container__commentlist">
       <div class="item__commentlist" @click="goDetails(item.id)" v-for="(item, index) in list" :key="index">
         <div class="item__thumb">
           <img src="../assets/img/commentlist.png" alt="">
@@ -11,12 +11,12 @@
         </div>
       </div>
     </section>
+    <div v-else-if="!list.length && loading === false" >暂无内容！</div>
     <div class="add" @click="addComment">
       <div></div>
       <div></div>
     </div>
   </div>
-  <div v-else-if="!list.length && loading === false" >暂无内容！</div>
 </template>
 <script>
 
@@ -85,14 +85,14 @@ export default {
         this.$wx.config(res)
         this.$wx.ready(() => {
           this.$wx.onMenuShareAppMessage({
-            title: '清廉村社',
-            desc: document.title || '清廉村社',
+            title: sessionStorage.villageName + '·清廉村社',
+            desc: document.title || sessionStorage.villageName + '·清廉村社',
             link: window.location.href
           })
           this.$wx.onMenuShareTimeline({
-            title: '清廉村社',
+            title: sessionStorage.villageName + '·清廉村社',
             link: window.location.href,
-            desc: document.title || '清廉村社'
+            desc: document.title || sessionStorage.villageName + '·清廉村社'
           })
         })
       })

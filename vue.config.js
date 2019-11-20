@@ -4,7 +4,8 @@ module.exports = {
   outputDir: 'street',
   devServer: {
     host: '0.0.0.0',
-    public: '168.100.188.47:8080',
+    public: '168.100.188.47:80',
+    port: 80,
     hot: true,
     disableHostCheck: true,
     historyApiFallback: true

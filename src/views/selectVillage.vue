@@ -10,7 +10,7 @@
     </section>
     <section class="container__list">
       <div class="list">
-        <div class="item" v-for="(item, index) in addressList" :key="index" @click="selectAddress(item.id)">{{item.username}}</div>
+        <div class="item" v-for="(item, index) in addressList" :key="index" @click="selectAddress(item.id, item.username)">{{item.username}}</div>
       </div>
     </section>
   </div>
@@ -32,7 +32,8 @@ export default {
     hideTabbar () {
       this.$emit('hideTabbar')
     },
-    selectAddress (id) {
+    selectAddress (id, name) {
+      sessionStorage.villageName = name
       this.$router.push({ name: 'index', params: { village_id: id } })
       this.$emit('showTabbar')
     },

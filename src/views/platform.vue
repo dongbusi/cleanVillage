@@ -30,31 +30,6 @@ export default {
   methods: {
     setTitle () {
       document.title = '啄木鸟平台'
-    },
-    share () {
-      this.$request({
-        url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
-        data: this.$qs.stringify({
-          href: window.location.href
-        }),
-        method: 'post'
-      }).then(res => {
-        res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
-        
-        this.$wx.config(res)
-        this.$wx.ready(() => {
-          this.$wx.onMenuShareAppMessage({
-            title: '清廉村社',
-            desc: document.title || '清廉村社',
-            link: window.location.href
-          })
-          this.$wx.onMenuShareTimeline({
-            title: '清廉村社',
-            link: window.location.href,
-            desc: document.title || '清廉村社'
-          })
-        })
-      })
     }
   },
   mounted () {
@@ -64,7 +39,6 @@ export default {
     } else if (this.$route.name === 'chat') {
       this.navbar = 1
     }
-    this.share()
   }
 }
 </script>
