@@ -7,7 +7,7 @@
 <script>
 
 import { Dialog } from 'vant'
-import { getVillageList } from './api/index'
+import { getVillageList, goLogin } from './api/index'
 
 export default {
   data () {
@@ -18,34 +18,38 @@ export default {
   methods: {
     login () {
       if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
-        if (!this.$route.query.code) {
-          window.location.href = 'http://www.community.com?s=forward/api.login/oauth'
+        if (window.location.href.includes('selectvillage')) return
+        if (!localStorage.token) {
+          if (!this.getQueryString('code')) {
+            window.location.href = 'http://168.100.188.50/?s=forward/api.Login/code'
+          } else {
+            goLogin({
+              code: this.getQueryString('code'),
+              street_id: window.location.pathname.split('/')[2]
+            }).then(res => {
+              localStorage.token = res.data
+            }).catch(err => {
+              console.log(err)
+              window.location.href = 'http://168.100.188.50/?s=forward/api.Login/code'
+            })
+          }
         }
       } else {
-        this.login = false
+        // this.isLogin = false
         Dialog.alert({
           title: '提示',
           message: '请在微信中打开'
         })
       }
     },
-    getVillageName () {
-      if (!sessionStorage.villageName) {
-        let id
-        if (this.$route.params.village_id) {
-          id = Number(this.$route.params.village_id)
-        }
-        getVillageList().then(res => {
-          let list = res.data.list
-          let village = list.find(item => item.id === id)
-          sessionStorage.villageName = village.username
-        })
-      }
+    getQueryString (name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]); return null;
     }
   },
-  created () {
-    // this.login()
-    this.getVillageName()
+  mounted () {
+    this.login()
   }
 }
 </script>

@@ -8,7 +8,7 @@
     </router-link>
     <router-link class="item__tabbar" v-for="(item, index) in recommendTabbar" :key="index" :to="item.url_name === 'platform' ? { name: 'commentList'} :  { name: 'tab', params: { village_id: $route.params.village_id, menu_id: item.id, tab_index: 0}}" >
       <div class="item__tabbar__icon">
-        <img src="@/assets/img/tab-2.png" alt="">
+        <img :src="require(`@/assets/img/tab-${index + 2}.png`)" alt="">
       </div>
       <div class="item__tabbar__name">{{item.title}}</div>
     </router-link>

@@ -109,7 +109,9 @@ export default {
   mounted () {
     this.getContent()
     this.watchScroll()
-    this.share()
+    setTimeout(() => {
+      this.share()
+    }, 300);
   }
 }
 </script>

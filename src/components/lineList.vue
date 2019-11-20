@@ -74,7 +74,9 @@ export default {
   },
   mounted () {
     this.getList()
-    this.share()
+    setTimeout(() => {
+      this.share()
+    }, 300);
   }
 }
 </script>

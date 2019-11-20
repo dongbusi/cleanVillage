@@ -25,6 +25,8 @@
 
 <script>
 
+import http from '../utils/request'
+
 export default {
   data () {
     return {
@@ -60,11 +62,28 @@ export default {
           })
         })
       })
+    },
+    getChat () {
+      http({
+        url: 'http://www.community.com/admin.html?s=forward/api.data/leaving',
+        data: {
+          street_id: this.$route.params.village_id
+        },
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        }
+      }).then(res => {
+        console.log(res)
+      })
     }
   },
   mounted () {
+    this.getChat()
     this.hideTabbar()
-    this.share()
+    setTimeout(() => {
+      this.share()
+    }, 300);
   },
   beforeDestroy () {
     this.showTabbar()

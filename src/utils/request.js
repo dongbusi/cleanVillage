@@ -11,8 +11,8 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
-  if (sessionStorage.getItem('token')) {
-    config.headers['token'] = sessionStorage.getItem('token')
+  if (localStorage.getItem('token')) {
+    config.headers['token'] = localStorage.getItem('token')
   }
   return config
 }, error => {

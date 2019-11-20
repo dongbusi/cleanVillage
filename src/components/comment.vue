@@ -126,7 +126,9 @@ export default {
     }
   },
   mounted () {
-    this.share()
+    setTimeout(() => {
+      this.share()
+    }, 300);
   }
 }
 </script>

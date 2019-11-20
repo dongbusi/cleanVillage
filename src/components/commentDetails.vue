@@ -64,7 +64,9 @@ export default {
   },
   mounted () {
     this.getContent()
-    this.share()
+    setTimeout(() => {
+      this.share()
+    }, 300);
   }
 }
 </script>

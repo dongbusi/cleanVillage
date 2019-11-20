@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-import { getMenu, getSwiper, getRecommendInfoList, getRecommendNewsList } from '../api/index'
+import { getMenu, getSwiper, getRecommendInfoList, getRecommendNewsList, getVillageList, goLogin } from '../api/index'
 export default {
   data () {
     return {
@@ -101,7 +101,6 @@ export default {
         method: 'post'
       }).then(res => {
         res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
-        
         this.$wx.config(res)
         this.$wx.ready(() => {
           this.$wx.onMenuShareAppMessage({
@@ -116,15 +115,53 @@ export default {
           })
         })
       })
+    },
+    getVillageName () {
+      if (!sessionStorage.villageName) {
+        let id
+        if (this.$route.params.village_id) {
+          id = Number(this.$route.params.village_id)
+        }
+        getVillageList().then(res => {
+          let list = res.data.list
+          let village = list.find(item => item.id === id)
+          document.title = village.username + '·清廉村社'
+        })
+      }
+    },
+    getQueryString (name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]); return null;
+    },
+    login () {
+      if (!localStorage.token) {
+        if (!this.getQueryString('code')) {
+          window.location.href = 'http://168.100.188.50/?s=forward/api.Login/code'
+        } else {
+          goLogin({
+            code: this.getQueryString('code'),
+            street_id: window.location.pathname.split('/')[2]
+          }).then(res => {
+            localStorage.token = res.data
+          }).catch(err => {
+            console.log(err)
+            window.location.href = 'http://168.100.188.50/?s=forward/api.Login/code'
+          })
+        }
+      }
     }
   },
   mounted () {
-    document.title = sessionStorage.villageName + '·清廉村社'
+    this.login()
     this.getMenuList()
     this.getSwiper()
     this.getInfoList()
     this.getNewsList()
-    this.share()
+    setTimeout(() => {
+      document.title = this.$store.getters.getAddress + '·清廉村社'
+      this.share()
+    }, 300);
   }
 }
 </script>
@@ -134,7 +171,6 @@ export default {
   width: 7.5rem;
   height: 3.5rem;
   object-fit: cover;
-  
 }
 .container__nav {
   padding: 0.4rem 0.24rem 0;

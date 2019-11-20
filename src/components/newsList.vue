@@ -118,7 +118,9 @@ export default {
   mounted () {
     this.getList()
     this.watchScroll()
-    this.share()
+    setTimeout(() => {
+      this.share()
+    }, 300);
   },
   watch: {
     id (newVal, oldVal) {

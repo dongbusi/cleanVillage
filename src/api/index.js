@@ -183,3 +183,19 @@ export function getLabelDetails (data) {
     method: 'POST'
   })
 }
+
+export function goLogin (params) {
+  return http({
+    url: 'http://168.100.188.50/?s=forward/api.Login/access_token',
+    params,
+    method: 'GET'
+  })
+}
+
+export function getChat (data) {
+  return http({
+    url: 'http://www.community.com/admin.html?s=forward/api.data/leaving',
+    data,
+    method: 'POST'
+  })
+}

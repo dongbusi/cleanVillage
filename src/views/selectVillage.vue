@@ -34,6 +34,7 @@ export default {
     },
     selectAddress (id, name) {
       sessionStorage.villageName = name
+      this.$store.dispatch('setAddress', name)
       this.$router.push({ name: 'index', params: { village_id: id } })
       this.$emit('showTabbar')
     },
@@ -73,7 +74,9 @@ export default {
     document.title = '清廉村社列表'
     this.hideTabbar()
     this.getVillageList()
-    this.share()
+    setTimeout(() => {
+      this.share()
+    }, 300);
   },
   watch: {
     address (newVal) {
