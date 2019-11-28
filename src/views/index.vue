@@ -133,30 +133,6 @@ export default {
         this.newsList = res.data.list
       })
     },
-    share () {
-      this.$request({
-        url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
-        data: this.$qs.stringify({
-          href: window.location.href
-        }),
-        method: 'post'
-      }).then(res => {
-        res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
-        this.$wx.config(res)
-        this.$wx.ready(() => {
-          this.$wx.onMenuShareAppMessage({
-            title: sessionStorage.villageName + '·清廉村社',
-            desc: sessionStorage.villageName + '·清廉村社',
-            link: window.location.href
-          })
-          this.$wx.onMenuShareTimeline({
-            title: sessionStorage.villageName + '·清廉村社',
-            link: window.location.href,
-            desc: sessionStorage.villageName + '·清廉村社'
-          })
-        })
-      })
-    },
     getVillageName () {
       if (!sessionStorage.villageName) {
         let id
@@ -220,7 +196,6 @@ export default {
     this.getNewsList()
     setTimeout(() => {
       if (sessionStorage.villageName) document.title = sessionStorage.villageName + '·' + '清廉村社'
-      this.share()
     }, 300);
   }
 }

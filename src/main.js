@@ -15,11 +15,55 @@ import { getVillageList } from './api/index'
 Vue.use(Vant);
 Vue.use(globalComponents);
 
-Vue.prototype.$qs = qs;
-Vue.prototype.$request = request;
-Vue.prototype.$wx = wx;
-
 Vue.config.productionTip = false;
+let initUrl = window.location.href
+router.afterEach((to, from) => {
+  if (window.__wxjs_is_wkwebview !== true) {
+    request({
+      url: 'https://cx.xianghunet.com/admin.html?s=forward/api.signature/getJsSign',
+      data: qs.stringify({
+        href: encodeURIComponent(window.location.href)
+      }),
+      method: 'post'
+    }).then(res => {
+      wx.config(res)
+      wx.ready(() => {
+        wx.onMenuShareAppMessage({
+          title: sessionStorage.villageName + '·清廉村社',
+          desc: sessionStorage.villageName + '·清廉村社',
+          link: window.location.href
+        })
+        wx.onMenuShareTimeline({
+          title: sessionStorage.villageName + '·清廉村社',
+          link: window.location.href,
+          desc: sessionStorage.villageName + '·清廉村社'
+        })
+      })
+    })
+  } else if (window.__wxjs_is_wkwebview === true) {
+    request({
+      url: 'https://cx.xianghunet.com/admin.html?s=forward/api.signature/getJsSign',
+      data: qs.stringify({
+        href: encodeURIComponent(initUrl)
+      }),
+      method: 'post'
+    }).then(res => {
+      wx.config(res)
+      wx.ready(() => {
+        wx.onMenuShareAppMessage({
+          title: sessionStorage.villageName + '·清廉村社',
+          desc: sessionStorage.villageName + '·清廉村社',
+          link: window.location.href
+        })
+        wx.onMenuShareTimeline({
+          title: sessionStorage.villageName + '·清廉村社',
+          link: window.location.href,
+          desc: sessionStorage.villageName + '·清廉村社'
+        })
+      })
+    })
+  }
+})
 
 const app = new Vue({
   router,

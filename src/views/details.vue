@@ -30,7 +30,7 @@ export default {
           id: this.$route.params.details_id,
           pid: this.$route.query.tab_id,
           street_id: this.$route.params.village_id,
-          type: this.$route.query.type,
+          type: this.$route.query.type
         }).then(res => {
           this.content = res.data || {}
         })
@@ -43,37 +43,10 @@ export default {
           this.content = res.data || {}
         })
       }
-    },
-    share () {
-      this.$request({
-        url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
-        data: this.$qs.stringify({
-          href: window.location.href
-        }),
-        method: 'post'
-      }).then(res => {
-        res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
-        this.$wx.config(res)
-        this.$wx.ready(() => {
-          this.$wx.onMenuShareAppMessage({
-            title: sessionStorage.villageName + '·清廉村社',
-            desc: document.title || sessionStorage.villageName + '·清廉村社',
-            link: window.location.href
-          })
-          this.$wx.onMenuShareTimeline({
-            title: sessionStorage.villageName + '·清廉村社',
-            link: window.location.href,
-            desc: document.title || sessionStorage.villageName + '·清廉村社'
-          })
-        })
-      })
     }
   },
   mounted () {
     this.getContent()
-    setTimeout(() => {
-      this.share()
-    }, 300);
   }
 }
 </script>

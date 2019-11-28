@@ -36,7 +36,7 @@ export default {
       this.loading = true
       getLineList({
         pid: this.id,
-        street_id: this.$route.params.village_id,
+        street_id: this.$route.params.village_id
       }).then(res => {
         this.list = res.data.list
         this.$nextTick(() => {
@@ -45,38 +45,10 @@ export default {
       }).catch(() => {
         this.loading = false
       })
-    },
-    share () {
-      this.$request({
-        url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
-        data: this.$qs.stringify({
-          href: window.location.href
-        }),
-        method: 'post'
-      }).then(res => {
-        res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
-        
-        this.$wx.config(res)
-        this.$wx.ready(() => {
-          this.$wx.onMenuShareAppMessage({
-            title: sessionStorage.villageName + '·清廉村社',
-            desc: document.title || sessionStorage.villageName + '·清廉村社',
-            link: window.location.href
-          })
-          this.$wx.onMenuShareTimeline({
-            title: sessionStorage.villageName + '·清廉村社',
-            link: window.location.href,
-            desc: document.title || sessionStorage.villageName + '·清廉村社'
-          })
-        })
-      })
     }
   },
   mounted () {
     this.getList()
-    setTimeout(() => {
-      this.share()
-    }, 300);
   }
 }
 </script>

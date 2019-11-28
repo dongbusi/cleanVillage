@@ -15,7 +15,7 @@ const routes = [
       {
         path: 'index',
         component: index,
-        name: 'index',
+        name: 'index'
       },
       {
         path: 'menu/:menu_id/tab/:tab_index',

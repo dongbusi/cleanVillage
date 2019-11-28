@@ -50,30 +50,6 @@ export default {
         this.getChat()
       })
     },
-    share () {
-      this.$request({
-        url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
-        data: this.$qs.stringify({
-          href: window.location.href
-        }),
-        method: 'post'
-      }).then(res => {
-        res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
-        this.$wx.config(res)
-        this.$wx.ready(() => {
-          this.$wx.onMenuShareAppMessage({
-            title: sessionStorage.villageName + '·清廉村社',
-            desc: document.title || sessionStorage.villageName + '·清廉村社',
-            link: window.location.href
-          })
-          this.$wx.onMenuShareTimeline({
-            title: sessionStorage.villageName + '·清廉村社',
-            link: window.location.href,
-            desc: document.title || sessionStorage.villageName + '·清廉村社'
-          })
-        })
-      })
-    },
     getChat () {
       http({
         url: 'https://cx.xianghunet.com/admin.html?s=forward/api.data/leaving',
@@ -83,7 +59,7 @@ export default {
         headers: {
           token: localStorage.token
         },
-        method: 'POST',
+        method: 'POST'
       }).then(res => {
         this.content = res.data
       })
@@ -93,9 +69,6 @@ export default {
     document.title = '实时主题互动'
     this.getChat()
     this.hideTabbar()
-    setTimeout(() => {
-      this.share()
-    }, 300);
   },
   beforeDestroy () {
     this.showTabbar()
