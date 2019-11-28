@@ -10,6 +10,7 @@ import globalComponents from './utils/globalComponent'
 import wx from 'weixin-js-sdk'
 import request from './utils/request'
 import qs from 'qs'
+import { getVillageList } from './api/index'
 
 Vue.use(Vant);
 Vue.use(globalComponents);
@@ -20,8 +21,25 @@ Vue.prototype.$wx = wx;
 
 Vue.config.productionTip = false;
 
-new Vue({
+const app = new Vue({
   router,
   store,
   render: h => h(App)
-}).$mount('#app')
+})
+
+if (!window.location.href.includes('selectvillage') && !sessionStorage.villageName) {
+  let id
+  if (process.env.NODE_ENV === 'development') {
+    id = Number(window.location.pathname.split('/')[2])
+  } else {
+    id = Number(window.location.pathname.split('/')[3])
+  }
+  getVillageList().then(res => {
+    let list = res.data.list
+    let village = list.find(item => item.id === id)
+    sessionStorage.villageName = village.username || ''
+    app.$mount('#app')
+  })
+} else {
+  app.$mount('#app')
+}

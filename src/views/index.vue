@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="styleType == 1">
     <section class="swiper__container">
       <van-swipe :autoplay="3000" class="swiper__list" :show-indicators="false">
         <van-swipe-item v-for="(item, index) in swiper" :key="index"><img class="swiper__item" :src="item" alt=""></van-swipe-item>
@@ -36,9 +36,46 @@
       </div>
     </section>
   </div>
+  <div v-else-if="styleType == 2" class="style__two">
+    <div class="navbar">
+      <div class="item__navbar" v-for="(item, index) in navList" :key="index"  @click="goTabList(item.id, item.url_name)">
+        <div class="item-icon"><img :src="item.logo" :alt="item.title"></div>
+        <div class="item-name">{{item.title}}</div>
+      </div>
+    </div>
+    <div class="survey">
+      <div class="survey-aside">
+        <router-link :to="{name: 'tab', params: {menu_id: infoList.id, tab_index: 0}}">
+          <div><img :src="require('../assets/img/index-0.jpg')" alt=""></div>
+          <div class="survey__name">{{infoList.sub && infoList.sub[0].title}}</div>
+        </router-link >
+      </div>
+      <div class="survey-body">
+        <div class="item__surveys" v-for="(item, index) in infolistStyleTwo" :key="index">
+          <router-link :to="{name: 'tab', params: {menu_id: infoList.id, tab_index: index + 1}}">
+            <div style="height: 1.25rem"><img :src="require('../assets/img/index-' + (index + 1) + '.jpg')" alt=""></div>
+            <div class="survey__name" style="height: 0.45rem;line-height: 0.45rem;">{{item.title}}</div>
+          </router-link >
+        </div>
+      </div>
+    </div>
+    <div class="banner">
+      <img src="../assets/img/index-banner.jpg" alt="">
+    </div>
+    <div class="news">
+      <div class="news__header">{{newsList.title}}</div>
+      <div class="news__body">
+        <div class="news__item" @click="goNewsDetails(newsList.id, item.key, item.id, item.pid)" v-for="(item, index) in newsList.data" :key="index">
+          <div class="news__info">{{item.menu}} | {{item.create_at}}</div>
+          <div class="news__title">{{item.title}} </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script>
-import { getMenu, getSwiper, getRecommendInfoList, getRecommendNewsList, getVillageList, goLogin } from '../api/index'
+import { getMenu, getSwiper, getRecommendInfoList, getRecommendNewsList, getVillageList, goLogin, getStyle } from '../api/index'
+import { Dialog } from 'vant'
 export default {
   data () {
     return {
@@ -47,7 +84,9 @@ export default {
       villageSurveyId: '',
       swiper: [],
       newsList: [],
-      infoList: []
+      infoList: [],
+      styleType: 0,
+      infolistStyleTwo: []
     }
   },
   methods: {
@@ -73,6 +112,8 @@ export default {
         street_id: this.$route.params.village_id
       }).then(res => {
         this.infoList = res.data.list
+        this.infolistStyleTwo = JSON.parse(JSON.stringify(res.data.list.sub))
+        this.infolistStyleTwo.splice(0, 1)
       })
     },
     getSwiper () {
@@ -135,31 +176,50 @@ export default {
       if (r != null) return unescape(r[2]); return null;
     },
     login () {
-      if (!localStorage.token) {
-        if (!this.getQueryString('code')) {
-          window.location.href = 'http://168.100.188.50/?s=forward/api.Login/code'
-        } else {
-          goLogin({
-            code: this.getQueryString('code'),
-            street_id: window.location.pathname.split('/')[2]
-          }).then(res => {
-            localStorage.token = res.data
-          }).catch(err => {
-            console.log(err)
-            window.location.href = 'http://168.100.188.50/?s=forward/api.Login/code'
-          })
+      if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
+        if (!localStorage.token) {
+          if (!this.getQueryString('code')) {
+            // window.location.href = 'http://168.100.188.50/?s=forward/api.Login/code'
+            window.location.href = 'https://cx.xianghunet.com/?s=forward/api.Login/code'
+          } else {
+            goLogin({
+              code: this.getQueryString('code'),
+              street_id: window.location.pathname.split('/')[2]
+            }).then(res => {
+              localStorage.token = res.data
+            })
+            // .catch(err => {
+            //   console.log(err)
+            //   // window.location.href = 'http://168.100.188.50/?s=forward/api.Login/code'
+            // })
+          }
         }
+      } else {
+        Dialog.alert({
+          title: '提示',
+          message: '请在微信中打开'
+        })
       }
+    },
+    getStyle () {
+      getStyle({
+        street_id: this.$route.params.village_id
+      }).then(res => {
+        this.styleType = res.data.list.style_type
+      })
     }
   },
-  mounted () {
+  created () {
     this.login()
+    this.getStyle()
+  },
+  mounted () {
     this.getMenuList()
     this.getSwiper()
     this.getInfoList()
     this.getNewsList()
     setTimeout(() => {
-      document.title = this.$store.getters.getAddress + '·清廉村社'
+      if (sessionStorage.villageName) document.title = sessionStorage.villageName + '·' + '清廉村社'
       this.share()
     }, 300);
   }
@@ -289,9 +349,113 @@ export default {
   white-space: nowrap;
 }
 .item__news div:first-child {
-  width: 5.4rem;
+  width: 5rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+</style>
+<style lang="scss" scoped>
+.style__two {
+  .navbar {
+    display: flex;
+    overflow-x: auto;
+    height: 2rem;
+    padding: 0.3rem 0.6rem 0;
+    background: #F3F3F3;
+  }
+  .item__navbar {
+    margin-left: 0.67rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 1.15rem;
+    align-items: center;
+    background: #F3F3F3;
+  }
+  .item__navbar:first-child {
+    margin-left: 0;
+  }
+  .item__navbar:last-child {
+    padding-right: 0.6rem;
+  }
+  .item-icon {
+    width: 0.73rem;
+    height: 0.73rem;
+  }
+  .survey {
+    padding: 0.5rem 0.44rem 0.25rem;
+    display: flex;
+    justify-content: space-between;
+    background: #E5E5E5;
+  }
+  .survey-aside {
+    height: 5.2rem;
+    width: 4.7rem;
+  }
+  .survey-body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 5.2rem;
+    overflow-y: auto;
+  }
+  .item__surveys {
+    width: 1.7rem;
+  }
+  .item__survey img {
+    width: 1.7rem;
+    height: 1.25rem;
+  }
+  .survey__name {
+    width: 100%;
+    height: 0.9rem;
+    line-height: 0.9rem;
+    text-align: center;
+    color: #000000;
+  }
+  .banner {
+    padding: 0 0.44rem 0.3rem;
+    background: #E5E5E5;
+    img {
+      height: 1.4rem;
+    }
+  }
+  .news {
+    min-height: 4.66rem;
+    background: #E5E5E5;
+    padding: 0 0.44rem 0rem;
+  }
+  .news__header {
+    height: 0.86rem;
+    border-bottom: 0.01rem solid #DCDCDC;
+    line-height: 0.86rem;
+    font-size: 0.28rem;
+    padding-left: 0.7rem;
+  }
+  .news__body {
+    padding: 0.4rem 0.7rem;
+  }
+  .news__info, .news__title {
+    font-weight: 300;
+    font-size: 0.26rem;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .news__item {
+    margin-top: 0.2rem;
+  }
+  .news__item:first-child {
+    margin-top: 0rem;
+  }
+}
+.style__two::after {
+  display: block;
+  content: '';
+  height: 2rem;
+  background: #E5E5E5;
 }
 </style>

@@ -5,9 +5,8 @@
       <div class="line"></div>
     </div>
     <div class="content">
-      <div class="item item__controller">您对我们近期所开展的工作有什么意见建议？欢迎您在下面回复告诉我们。如果需要我们答复您，请留下您的联系方式。期待您的参与！</div>
-      <div class="item item__user">希望休博园社区能够增加一些老年活动设施，丰富老年人的日常生活。</div>
-      <div class="item item__user">希望休博园社区能够增加一些老年活动设施，丰富老年人的日常生活。</div>
+      <div class="item item__controller">{{content && content.title.content}}</div>
+      <div class="item item__user" v-for="(item, index) in content.leaving" :key="index">{{item.content}}</div>
     </div>
     <div class="comment">
       <div>
@@ -30,14 +29,27 @@ import http from '../utils/request'
 export default {
   data () {
     return {
-      message: ''
+      message: '',
+      content: ''
     }
   },
   inject: ['hideTabbar', 'showTabbar'],
   methods: {
     submit () {
-      this.message = ''
-    },    
+      http({
+        url: 'https://cx.xianghunet.com/admin.html?s=forward/api.data/leaving_add',
+        data: {
+          street_id: this.$route.params.village_id,
+          content: this.message,
+          in_id: this.content.title.id
+        },
+        method: 'POST'
+      }).then(res => {
+        this.$toast('发送成功');
+        this.message = ''
+        this.getChat()
+      })
+    },
     share () {
       this.$request({
         url: 'http://h5.xianghunet.com/wx/wx_Signature.php',
@@ -47,7 +59,6 @@ export default {
         method: 'post'
       }).then(res => {
         res['jsApiList'] = ['onMenuShareAppMessage', 'onMenuShareTimeline']
-        
         this.$wx.config(res)
         this.$wx.ready(() => {
           this.$wx.onMenuShareAppMessage({
@@ -65,20 +76,21 @@ export default {
     },
     getChat () {
       http({
-        url: 'http://www.community.com/admin.html?s=forward/api.data/leaving',
+        url: 'https://cx.xianghunet.com/admin.html?s=forward/api.data/leaving',
         data: {
           street_id: this.$route.params.village_id
         },
-        method: 'POST',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }
+          token: localStorage.token
+        },
+        method: 'POST',
       }).then(res => {
-        console.log(res)
+        this.content = res.data
       })
     }
   },
   mounted () {
+    document.title = '实时主题互动'
     this.getChat()
     this.hideTabbar()
     setTimeout(() => {
@@ -122,7 +134,8 @@ export default {
     height: 1.5rem;
   }
   .item__controller {
-    width: 5.6rem;
+    max-width: 5.6rem;
+    display: flex;
     padding: 0.24rem 0.32rem;
     background: #F5F5F5;
     border-radius: 0.16rem 0.16rem 0 0;
@@ -139,7 +152,8 @@ export default {
     margin-top: 0;
   }
   .item__user {
-    width: 5.38rem;
+    max-width: 5.38rem;
+    display: flex;
     padding: 0.24rem 0.32rem;
     color: #FFFFFF;
     font-size: 0.32rem;

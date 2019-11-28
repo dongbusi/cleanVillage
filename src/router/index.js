@@ -2,9 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import index from '../views/index.vue'
 import layout from '../views/layout'
-import http from '../utils/request'
-import qs from 'qs'
-import wx from 'weixin-js-sdk'
+import { Dialog } from 'vant'
+import { goLogin } from '../api/index'
 
 Vue.use(VueRouter)
 
@@ -16,7 +15,7 @@ const routes = [
       {
         path: 'index',
         component: index,
-        name: 'index'
+        name: 'index',
       },
       {
         path: 'menu/:menu_id/tab/:tab_index',
@@ -85,6 +84,44 @@ const router = new VueRouter({
   routes,
   base: process.env.VUE_APP_SRC,
   mode: 'history'
+})
+
+function getQueryString (name) {
+  var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) return unescape(r[2]); return null;
+}
+
+router.beforeEach((to, from, next) => {
+  if (/micromessenger/.test(navigator.userAgent.toLowerCase())) {
+    if (to.name === 'selectvillage' || to.name === 'index') {
+      next()
+      return
+    }
+    if (!localStorage.token) {
+      if (!getQueryString('code')) {
+        // window.location.href = 'http://168.100.188.50/?s=forward/api.Login/code'
+        window.location.href = 'https://cx.xianghunet.com/?s=forward/api.Login/code'
+      } else {
+        goLogin({
+          code: getQueryString('code'),
+          street_id: to.params.village_id
+        }).then(res => {
+          localStorage.token = res.data
+          next()
+        }).catch(err => {
+          console.log(err)
+          // window.location.href = 'http://168.100.188.50/?s=forward/api.Login/code'
+          window.location.href = 'https://cx.xianghunet.com/?s=forward/api.Login/code'
+        })
+      }
+    } else next()
+  } else {
+    Dialog.alert({
+      title: '提示',
+      message: '请在微信中打开'
+    })
+  }
 })
 
 export default router

@@ -112,6 +112,10 @@ export default {
   padding: 0 0 0.5rem;
   display: flex;
   height: 3rem;
+  margin-top: 0.54rem;
+}
+.container__inspector:first-child {
+  margin-top: 0;
 }
 .inspector-avatur {
   width: 2.5rem;

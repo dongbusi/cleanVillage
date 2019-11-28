@@ -34,7 +34,6 @@ export default {
     },
     selectAddress (id, name) {
       sessionStorage.villageName = name
-      this.$store.dispatch('setAddress', name)
       this.$router.push({ name: 'index', params: { village_id: id } })
       this.$emit('showTabbar')
     },

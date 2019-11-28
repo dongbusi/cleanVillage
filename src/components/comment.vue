@@ -126,6 +126,7 @@ export default {
     }
   },
   mounted () {
+    document.title = '我有话说'
     setTimeout(() => {
       this.share()
     }, 300);

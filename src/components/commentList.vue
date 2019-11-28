@@ -107,6 +107,7 @@ export default {
     }
   },
   mounted () {
+    document.title = '我有话说'
     this.getContent()
     this.watchScroll()
     setTimeout(() => {

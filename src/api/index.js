@@ -186,7 +186,8 @@ export function getLabelDetails (data) {
 
 export function goLogin (params) {
   return http({
-    url: 'http://168.100.188.50/?s=forward/api.Login/access_token',
+    // url: 'http://168.100.188.50/?s=forward/api.Login/access_token',
+    url: 'https://cx.xianghunet.com/?s=forward/api.Login/access_token',
     params,
     method: 'GET'
   })
@@ -194,7 +195,16 @@ export function goLogin (params) {
 
 export function getChat (data) {
   return http({
-    url: 'http://www.community.com/admin.html?s=forward/api.data/leaving',
+    // url: 'http://www.community.com/admin.html?s=forward/api.data/leaving',
+    url: 'https://cx.xianghunet.com/admin.html?s=forward/api.data/leaving',
+    data,
+    method: 'POST'
+  })
+}
+
+export function getStyle (data) {
+  return http({
+    url: 'api.Menu/street_style',
     data,
     method: 'POST'
   })
