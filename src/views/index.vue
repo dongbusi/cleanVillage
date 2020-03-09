@@ -66,7 +66,7 @@
       <div class="news__header">{{newsList.title}}</div>
       <div class="news__body">
         <div class="news__item" @click="goNewsDetails(newsList.id, item.key, item.id, item.pid)" v-for="(item, index) in newsList.data" :key="index">
-          <div class="news__info">{{item.menu}} | {{item.create_at}}</div>
+          <div class="news__info">{{item.menu}} 丨 {{item.create_at}}</div>
           <div class="news__title">{{item.title}} </div>
         </div>
       </div>

@@ -99,6 +99,7 @@ export default {
     id (newVal, oldVal) {
       if (newVal !== oldVal) {
         this.page = 0
+        this.list = []
         this.getList()
       }
     }
